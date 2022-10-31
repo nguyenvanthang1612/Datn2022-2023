@@ -1,0 +1,29 @@
+<?php
+/**
+ * Copyright © 2015 Magenest. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ *
+ * Magenest_Xero extension
+ * NOTICE OF LICENSE
+ *
+ * @category  Magenest
+ * @package   Magenest_Salesforce
+ * @author ThaoPV
+ */
+?>
+<?php
+/**
+ * @var Magenest\Directory\Block\System\Config\Form\Button\Update $block
+ * @var Magento\Framework\Escaper $escaper
+ */
+?>
+<div class="actions button-container">
+    <button  class="button action-configure"
+             type="button"
+             data-role="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>"
+             id="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>"
+             onclick="location.href='<?= $escaper->escapeHtmlAttr($block->getUpdateUrl()) ?>';">
+        <span><?= $escaper->escapeHtml($block->getButtonLabel()) ?></span>
+    </button>
+</div>

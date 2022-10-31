@@ -1,0 +1,128 @@
+<?php
+/**
+ * @var Magenest\Directory\Block\Adminhtml\Plugin\Edit\Renderer\Directory $block
+ * @var Magento\Framework\Escaper $escaper
+ */
+
+$formValues = $block->getFormValues();
+$htmlIdPrefix = $block->getHtmlIdPrefix();
+//edit billing, shipping address
+$addressData = $formValues;
+// if form value is null, get address from customer address
+if (empty($formValues['city_id']) || $formValues['city_id'] == 'null') {
+    $addressObject = $block->getAddressById($formValues['customer_address_id'] ?? null);
+    if (!empty($addressObject)) {
+        $addressData = $addressObject->getData();
+    // reorder of guest, get address from quote address
+    } else {
+        $addressData = $block->getQuoteAddressById($formValues['quote_id'] ?? null);
+    }
+}
+
+$baseUrl = $block->getBaseUrl();
+?>
+<div class="<?= $escaper->escapeHtmlAttr($htmlIdPrefix) ?>directory-fields directory-fields">
+    <div class="field field-city admin__field _required">
+        <label class="label admin__field-label"
+               for="<?= $escaper->escapeHtmlAttr($block->getFieldName('city')) ?>">
+            <span><?= $escaper->escapeHtml(__('City')) ?></span>
+        </label>
+        <div class="control admin__field-control">
+            <input id="<?= $escaper->escapeHtmlAttr($block->getFieldId('city')) ?>"
+                   name="<?= $escaper->escapeHtmlAttr($block->getFieldName('city')) ?>"
+                   value="<?= $escaper->escapeHtmlAttr($formValues['city'] ?? '') ?>"
+                   class="input-text admin__control-text" type="text" style="display: none">
+            <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('city_id')) ?>"
+                    name="<?= $escaper->escapeHtmlAttr($block->getFieldName('city_id')) ?>"
+                    class="select admin__control-select required-entry _required">
+                <option value=""><?= $escaper->escapeHtml(__('Please select city')) ?></option>
+            </select>
+        </div>
+    </div>
+    <div class="field field-district admin__field _required">
+        <label class="label admin__field-label"
+               for="<?= $escaper->escapeHtmlAttr($block->getFieldName('district')) ?>">
+            <span><?= $escaper->escapeHtml(__('District')) ?></span>
+        </label>
+        <div class="control admin__field-control">
+            <input id="<?= $escaper->escapeHtmlAttr($block->getFieldId('district')) ?>"
+                   name="<?= $escaper->escapeHtmlAttr($block->getFieldName('district')) ?>"
+                   value="<?= $escaper->escapeHtmlAttr($formValues['district'] ?? '') ?>"
+                   class="input-text admin__control-text" type="text" style="display: none">
+            <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('district_id')) ?>"
+                    name="<?= $escaper->escapeHtmlAttr($block->getFieldName('district_id')) ?>"
+                    class="select admin__control-select required-entry _required">
+                <option value=""><?= $escaper->escapeHtml(__('Please select district')) ?></option>
+            </select>
+        </div>
+    </div>
+    <div class="field field-ward admin__field _required">
+        <label class="label admin__field-label"
+               for="<?= $escaper->escapeHtmlAttr($block->getFieldName('ward')) ?>">
+            <span><?= $escaper->escapeHtml(__('Ward')) ?></span>
+        </label>
+        <div class="control admin__field-control">
+            <input id="<?= $escaper->escapeHtmlAttr($block->getFieldId('ward')) ?>"
+                   name="<?= $escaper->escapeHtmlAttr($block->getFieldName('ward')) ?>"
+                   value="<?= $escaper->escapeHtmlAttr($formValues['ward'] ?? '') ?>"
+                   class="input-text admin__control-text" type="text" style="display: none">
+            <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('ward_id')) ?>"
+                    name="<?= $escaper->escapeHtmlAttr($block->getFieldName('ward_id')) ?>"
+                    class="select admin__control-select required-entry _required">
+                <option value=""><?= $escaper->escapeHtmlAttr(__('Please select ward')) ?></option>
+            </select>
+        </div>
+    </div>
+    <div class="field field-country">
+        <div class="control admin__field-control">
+            <input name="<?= $escaper->escapeHtmlAttr($block->getFieldName('country_id')) ?>"
+                   value="VN" class="input-text admin__control-text" type="hidden">
+        </div>
+    </div>
+</div>
+<script>
+require([
+    'Magenest_Directory/js/field-updater',
+    'jquery'
+], function (fieldUpdater, jQuery) {
+    window.backendBaseUrl = '<?= $escaper->escapeUrl($baseUrl) ?>';
+    fieldUpdater({
+        "form": "#form-validate",
+        "defaultCity": "<?= isset($addressData['city_id']) ? (int) $addressData['city_id'] : '' ?>",
+        "defaultDistrict": "<?= isset($addressData['district_id']) ? (int)$addressData['district_id'] : '' ?>",
+        "defaultWard": "<?= isset($addressData['ward_id']) ? (int)$addressData['ward_id'] : '' ?>",
+        "htmlIdPrefix": "<?= $escaper->escapeHtml($htmlIdPrefix) ?>",
+        "dataJson": <?= /* @noEscape */ $block->getDataJson() ?>
+    }, jQuery('.<?= $escaper->escapeHtml($htmlIdPrefix) ?>directory-fields'))
+});
+</script>
+<?php if (strlen($block->getHtmlNamePrefix())): ?>
+<script>
+    require([
+        'jquery',
+        'Magento_Sales/order/create/form'
+    ], function () {
+        /**
+         * Sync address field
+         *
+         * @param container
+         * @param fieldName
+         * @param fieldValue
+         */
+        order.syncAddressField = function (container, fieldName, fieldValue) {
+            var syncName;
+
+            if (this.isBillingField(fieldName)) {
+                syncName = fieldName.replace('billing', 'shipping');
+            }
+
+            $(container).select('[name="' + syncName + '"]').each(function (element) {
+                if (~['input', 'textarea', 'select'].indexOf(element.tagName.toLowerCase())) {
+                    element.value = fieldValue.value;
+                    element.dispatchEvent(new Event('change'));
+                }
+            });
+        };
+    });
+</script>
+<?php endif; ?>

@@ -1,0 +1,47 @@
+<!--@subject {{trans "Rich's Product Vietnam account login code"}} @-->
+<!--@vars {
+"var otp_request":"Otp Request",
+"var store_phone":"Store Phone",
+"var store_email":"Store Email"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<table style="width: 100%">
+    <tr>
+        <td>
+            <p class="greeting">{{trans "Hi there,"}}</p>
+            <p>{{trans "Thank you for registering an account at Rich's."}}</p>
+
+            <p class="paragraph-break">
+                {{trans "Your login code is:"}}
+            </p>
+            <p class="otp-code">
+                {{trans "%otp_request" otp_request=$otp_request}}
+            </p>
+            <p class="otp-note paragraph-break">
+                {{trans "Valid for 15 minutes"}}
+            </p>
+
+            <p>{{trans "To ensure account security, please do not send the login code to others."}}</p>
+            <p style="margin-bottom: 0">{{trans "Sincere thanks,"}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td class="support-center">
+            <hr/>
+            <p><strong>{{trans "Support center"}}</strong></p>
+            <table class="support-center-table">
+                <tr>
+                    <td class="support-icon"><img src="{{view url='Magento_Email::images/email-icon.png'}}" alt="Email"/></td>
+                    <td><a href="mailto: {{var store_email}}" class="color-base" target="_blank">{{trans "%support_email" support_email=$store_email}}</a></td>
+                </tr>
+                <tr>
+                    <td class="support-icon"><img src="{{view url='Magento_Email::images/phone-icon.png'}}" alt="Phone"/></td>
+                    <td><a href="mailto: {{var store_phone}}" class="color-base" target="_blank">{{trans "%support_phone" support_phone=$store_phone}}</a></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

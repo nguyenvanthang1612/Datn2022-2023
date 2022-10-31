@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Quote\Model\Quote\Address" type="Magenest\Core\Model\Quote\Address" />
+    <type name="Magento\Customer\CustomerData\Customer">
+        <plugin name="add_customer_data_last_name" type="Magenest\Core\Plugin\CustomerData\Customer"/>
+    </type>
+    <type name="Magento\Framework\App\FrontControllerInterface">
+        <plugin name="showB2MeNotification" type="Magenest\Core\Plugin\Controller\B2MeNotification"/>
+    </type>
+    <preference for="Magento\OfflineShipping\Model\Carrier\Flatrate" type="Magenest\Core\Model\Carrier\Flatrate" />
+    <preference for="Magento\Framework\View\Helper\SecureHtmlRenderer" type="Magenest\Core\Framework\View\Helper\SecureHtmlRenderer"/>
+</config>

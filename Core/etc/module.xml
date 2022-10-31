@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Magenest_Core">
+        <sequence>
+            <module name="Magento_Backend" />
+            <module name="Magento_Directory" />
+            <module name="Mageplaza_Core" />
+            <module name="Mageplaza_Smtp" />
+            <module name="Magento_Wishlist" />
+            <module name="Magento_Catalog" />
+            <module name="Bss_Core" />
+            <module name="Magetop_Smtp" />
+            <module name="Magefan_Community" />
+            <module name="Sparsh_BuyNow" />
+            <module name="Magestat_SigninPhoneNumber" />
+            <module name="Amasty_Base" />
+            <module name="Plumrocket_Base" />
+            <module name="Rokanthemes_RokanBase" />
+            <module name="Yotpo_Yotpo" />
+            <module name="FishPig_WordPress" />
+            <module name="Mirasvit_Core" />
+        </sequence>
+    </module>
+</config>

@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Config\Model\Config\Structure\Data">
+        <plugin name="mageplaza_module_activate" disabled="true" />
+    </type>
+    <type name="Magento\Backend\Model\Menu\Builder\AbstractCommand">
+        <plugin name="mageplaza_move_menu" disabled="true" />
+    </type>
+    <type name="Magento\SalesRule\Model\Rule\Condition\Address">
+        <plugin name="sales_rule_hide_inactive_payment_method"
+                type="Magenest\Core\Plugin\SalesRule\Conditions\Address"/>
+    </type>
+</config>

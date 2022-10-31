@@ -1,0 +1,22 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="inventory_source">
+        <column xsi:type="int" name="city_id" padding="10" unsigned="true" nullable="true" default="null" comment="City Id" />
+        <column xsi:type="varchar" name="district" nullable="true" default="null" length="255" comment="District" />
+        <column xsi:type="int" name="district_id" padding="10" unsigned="true" default="null" comment="District Id" />
+        <column xsi:type="varchar" name="ward" nullable="true" default="null" length="255" comment="Ward" />
+        <column xsi:type="int" name="ward_id" padding="10" unsigned="true" default="null" comment="Ward Id" />
+        <constraint xsi:type="foreign" referenceId="INVENTORY_SOURCE_CITY_ID" table="inventory_source"
+                    column="city_id" referenceTable="directory_city_entity" referenceColumn="city_id"
+                    onDelete="SET NULL"/>
+        <constraint xsi:type="foreign" referenceId="INVENTORY_SOURCE_DISTRICT_ID" table="inventory_source"
+                    column="district_id" referenceTable="directory_district_entity" referenceColumn="district_id"
+                    onDelete="SET NULL"/>
+        <constraint xsi:type="foreign" referenceId="INVENTORY_SOURCE_WARD_ID" table="inventory_source"
+                    column="ward_id" referenceTable="directory_ward_entity" referenceColumn="ward_id"
+                    onDelete="SET NULL"/>
+    </table>
+    <table name="quote" resource="checkout" comment="Sales Flat Quote">
+        <column xsi:type="char" name="location" length="10" nullable="true" comment="Location"/>
+    </table>
+</schema>

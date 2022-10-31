@@ -1,0 +1,26 @@
+{
+    "name": "magenest/module-ahamove",
+    "description": "",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "email": "info@mage2gen.com",
+            "name": "Mage2Gen"
+        },
+        {
+            "email": "vukyanh001@gmail.com",
+            "name": "K\u1ef3 Anh V\u0169"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Magenest\\Ahamove\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

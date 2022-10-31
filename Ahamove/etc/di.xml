@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="shipping_service" xsi:type="string">sales_order.shipping_service</item>
+                <item name="api_shipping_status" xsi:type="string">sales_order.api_shipping_status</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magenest\Ahamove\Helper\Logger\Logger" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">Ahamove</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Magenest\Ahamove\Helper\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magenest\Ahamove\Helper\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/ahamove.log</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magenest\Ahamove\Helper\ShipmentHelper">
+        <arguments>
+            <argument name="logger" xsi:type="object">Magenest\Ahamove\Helper\Logger\Logger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\View">
+        <plugin name="addRecallDriverButton" type="Magenest\Ahamove\Plugin\Block\Adminhtml\Order\View"/>
+    </type>
+</config>

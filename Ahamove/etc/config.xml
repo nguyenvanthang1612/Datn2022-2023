@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<carriers>
+			<ahamove>
+				<model>Magenest\Ahamove\Model\Carrier\Ahamove</model>
+				<active>0</active>
+				<title>Ahamove</title>
+				<name>Ahamove</name>
+				<sandbox>0</sandbox>
+				<price>0.00</price>
+				<price_type>0</price_type>
+				<distance_limit>15</distance_limit>
+				<enable_freeshipping>0</enable_freeshipping>
+				<allowed_methods>VCA-BIKE,VCA-EXPRESS,VCA-POOL,DAD-BIKE,DAD-EXPRESS,DAD-POOL,HAN-BIKE,HAN-TRAINING,HAN-BIKE-INTRADISTRICT,HAN-FLASHSALES,HAN-LAZADA,HAN-EXPRESS,HAN-DG,HAN-POOL,HAN-TMDT,HAN-SAMEDAY,HAN-GOSHOP,HAN-TRICYCLE,HAN-TRUCK-500,HAN-TRUCK-1000,HAN-BKN-SE,SGN-BIKE,SGN-POOL,SGN-LAZADA,SGN-EXPRESS,SGN-SAMEDAY,SGN-2H,SGN-DG,SGN-INTERCT-GHN,SGN-TRUCK-1000,SGN-TRICYCLE,SGN-TRUCK-500,SGN-TRUCK-2000,SGN-VAN-500,SGN-VAN-1000,SGN-FOOD,SGN-HUB,SGN-PARTNER-HOMIE-TCH,SGN-ECOM-AUTOTEST,SGN-HUB-SP,SGN-HEINEKEN</allowed_methods>
+				<specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+				<sallowspecific>0</sallowspecific>
+				<api_key>6e2ef98990c4d834fef95f1af7f97fee</api_key>
+				<api_token>5d673dc8eb44d752d7ea35d7</api_token>
+			</ahamove>
+		</carriers>
+	</default>
+</config>

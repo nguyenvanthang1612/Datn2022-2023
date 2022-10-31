@@ -1,0 +1,20 @@
+{
+  "name": "magenest/core",
+  "version": "1.0.0",
+  "description": "Magenest Core Module",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*"
+  },
+  "license": [
+    ""
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Magenest\\Core\\": ""
+    }
+  }
+}

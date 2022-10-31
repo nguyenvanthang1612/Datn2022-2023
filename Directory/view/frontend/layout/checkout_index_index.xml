@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="checkout" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="shipping-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="shippingAddress" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="shipping-address-fieldset" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <!--City field-->
+                                                                <item name="city" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                </item>
+                                                                <item name="city_id" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Magenest_Directory/js/form/element/city</item>
+                                                                    <item name="sortOrder" xsi:type="string">90</item>
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="template" xsi:type="string">ui/form/field</item>
+                                                                        <item name="elementTmpl" xsi:type="string">ui/form/element/select</item>
+                                                                        <item name="customEntry" xsi:type="string">shippingAddress.city</item>
+                                                                        <item name="captionValue" xsi:type="string">tn</item>
+                                                                        <item name="deps" xsi:type="array">
+                                                                            <item name="0" xsi:type="string">checkoutProvider</item>
+                                                                        </item>
+                                                                        <item name="imports" xsi:type="array">
+                                                                            <item name="initialOptions" xsi:type="string">index = checkoutProvider:dictionaries.city_id</item>
+                                                                            <item name="setOptions" xsi:type="string">index = checkoutProvider:dictionaries.city_id</item>
+                                                                        </item>
+                                                                    </item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="required-entry" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                    <item name="filterBy" xsi:type="array">
+                                                                        <item name="target" xsi:type="string"><![CDATA[${ $.provider }:${ $.parentScope }.country_id]]></item>
+                                                                        <item name="field" xsi:type="string">country_id</item>
+                                                                    </item>
+                                                                </item>
+                                                                <!--District field-->
+                                                                <item name="district" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                </item>
+                                                                <item name="district_id" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Magenest_Directory/js/form/element/district</item>
+                                                                    <item name="sortOrder" xsi:type="string">91</item>
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="template" xsi:type="string">ui/form/field</item>
+                                                                        <item name="elementTmpl" xsi:type="string">ui/form/element/select</item>
+                                                                        <item name="customEntry" xsi:type="string">shippingAddress.district</item>
+                                                                        <item name="captionValue" xsi:type="string">tn</item>
+                                                                        <item name="deps" xsi:type="array">
+                                                                            <item name="0" xsi:type="string">checkoutProvider</item>
+                                                                        </item>
+                                                                        <item name="imports" xsi:type="array">
+                                                                            <item name="initialOptions" xsi:type="string">index = checkoutProvider:dictionaries.district_id</item>
+                                                                            <item name="setOptions" xsi:type="string">index = checkoutProvider:dictionaries.district_id</item>
+                                                                        </item>
+                                                                    </item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="required-entry" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                    <item name="filterBy" xsi:type="array">
+                                                                        <item name="target" xsi:type="string"><![CDATA[${ $.provider }:${ $.parentScope }.city_id]]></item>
+                                                                        <item name="field" xsi:type="string">city_id</item>
+                                                                    </item>
+                                                                </item>
+                                                                <!--Ward field-->
+                                                                <item name="ward" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                </item>
+                                                                <item name="ward_id" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Magenest_Directory/js/form/element/ward</item>
+                                                                    <item name="sortOrder" xsi:type="string">92</item>
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="template" xsi:type="string">ui/form/field</item>
+                                                                        <item name="elementTmpl" xsi:type="string">ui/form/element/select</item>
+                                                                        <item name="customEntry" xsi:type="string">shippingAddress.ward</item>
+                                                                        <item name="captionValue" xsi:type="string">tn</item>
+                                                                        <item name="deps" xsi:type="array">
+                                                                            <item name="0" xsi:type="string">checkoutProvider</item>
+                                                                        </item>
+                                                                        <item name="imports" xsi:type="array">
+                                                                            <item name="initialOptions" xsi:type="string">index = checkoutProvider:dictionaries.ward_id</item>
+                                                                            <item name="setOptions" xsi:type="string">index = checkoutProvider:dictionaries.ward_id</item>
+                                                                        </item>
+                                                                    </item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="required-entry" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                    <item name="filterBy" xsi:type="array">
+                                                                        <item name="target" xsi:type="string"><![CDATA[${ $.provider }:${ $.parentScope }.district_id]]></item>
+                                                                        <item name="field" xsi:type="string">district_id</item>
+                                                                    </item>
+                                                                </item>
+                                                                <!--Region field-->
+                                                                <item name="region_id" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                </item>
+                                                                <!--Country field-->
+                                                                <item name="country_id" xsi:type="array">
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="disabled" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="telephone" xsi:type="array">
+                                                                    <item name="sortOrder" xsi:type="string">80</item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="required-entry" xsi:type="boolean">true</item>
+                                                                        <item name="mobileVN" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
