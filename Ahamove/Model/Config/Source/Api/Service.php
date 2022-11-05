@@ -11,7 +11,7 @@ namespace Magenest\Ahamove\Model\Config\Source\Api;
 use Magenest\Ahamove\Helper\ShipmentHelper;
 use Magento\Framework\Option\ArrayInterface;
 use Magento\Inventory\Model\ResourceModel\Source\CollectionFactory;
-use Magenest\RegionStock\Model\RegionModel;
+use Magenest\Ahamove\Model\RegionModel;
 use Magenest\Ahamove\Model\ApiConnect;
 
 /**

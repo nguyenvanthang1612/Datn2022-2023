@@ -13,7 +13,7 @@
 
 namespace Magenest\Ahamove\Helper;
 
-use Magenest\RegionStock\Model\RegionModel;
+use Magenest\Ahamove\Model\RegionModel;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Registry;
 use Magento\Store\Model\StoreManagerInterface;

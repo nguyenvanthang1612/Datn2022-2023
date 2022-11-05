@@ -1,17 +1,8 @@
 <?php
-/**
- * Copyright © 2021 Magenest. All rights reserved.
- * See COPYING.txt for license details.
- *
- * Magenest_Project extension
- * NOTICE OF LICENSE
- *
- * @author   PhongNguyen
- * @category Magenest
- * @package  Magenest_Project
- */
 
-namespace Magenest\RegionStock\Model;
+
+namespace Magenest\Ahamove\Model;
+
 
 class RegionModel
 {

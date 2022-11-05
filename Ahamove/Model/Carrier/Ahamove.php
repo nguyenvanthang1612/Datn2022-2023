@@ -2,22 +2,22 @@
 
 namespace Magenest\Ahamove\Model\Carrier;
 
+use Magenest\Ahamove\Helper\ShipmentHelper;
+use Magenest\Ahamove\Model\Config\Source\Api\Service as ServiceSource;
+use Magenest\Ahamove\Model\RegionModel;
+use Magenest\Directory\Helper\Data as DirectoryHelper;
+use Magenest\Directory\Model\CityFactory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\Xml\Security;
+use Magento\Inventory\Model\ResourceModel\Source;
+use Magento\Inventory\Model\SourceFactory;
 use Magento\OfflinePayments\Model\Checkmo;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Sales\Model\Order\Item;
-use Magento\Inventory\Model\ResourceModel\Source;
-use Magento\Inventory\Model\SourceFactory;
-use Magenest\Directory\Helper\Data as DirectoryHelper;
-use Magento\Framework\Message\ManagerInterface;
-use Magento\Sales\Model\ResourceModel\Order as ResourceOrder;
 use Magento\Sales\Model\OrderFactory;
-use Magento\Framework\Stdlib\CookieManagerInterface;
-use Magenest\Ahamove\Helper\ShipmentHelper;
-use Magenest\Ahamove\Model\Config\Source\Api\Service as ServiceSource;
-use Magenest\Directory\Model\CityFactory;
-use Magenest\RegionStock\Model\RegionModel;
+use Magento\Sales\Model\ResourceModel\Order as ResourceOrder;
 
 /**
  * Class Ahamove
@@ -166,7 +166,8 @@ class Ahamove extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnline impl
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
-        \Psr\Log\LoggerInterface $logger, Security $xmlSecurity,
+        \Psr\Log\LoggerInterface $logger,
+        Security $xmlSecurity,
         \Magento\Shipping\Model\Simplexml\ElementFactory $xmlElFactory,
         \Magento\Shipping\Model\Rate\ResultFactory $rateFactory,
         \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
@@ -389,7 +390,8 @@ class Ahamove extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnline impl
      * @return string
      */
     protected function convertAddressSource(
-        \Magenest\Directory\Model\City $city, \Magento\Inventory\Model\Source $source
+        \Magenest\Directory\Model\City $city,
+        \Magento\Inventory\Model\Source $source
     ) {
         return "{$source->getStreet()} {$source->getWard()} {$source->getDistrict()} {$city->getName()}";
     }
@@ -729,5 +731,4 @@ class Ahamove extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnline impl
         }
         return 0;
     }
-
 }
