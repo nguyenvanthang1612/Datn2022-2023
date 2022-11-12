@@ -246,14 +246,14 @@ class Ahamove extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnline impl
             return false;
         }
 
-        $shippingPrice = $this->getConfigData('price');
+        $shippingPrice = $this->getConfigData('total_fee');
 
         $result = $this->_rateFactory->create();
 
         if ($shippingPrice !== false) {
-            if ($request->getFreeShipping() === true || $request->getPackageQty() == $this->getFreeBoxes()) {
-                $shippingPrice = '0.00';
-            }
+//            if ($request->getFreeShipping() === true || $request->getPackageQty() == $this->getFreeBoxes()) {
+//                $shippingPrice = '0.00';
+//            }
             $subtotal = $this->shipmentHelper->getCarrierFreeshippingSubTotal();
 
             if ($request->getPackageValue() !== false && $this->shipmentHelper->getCarrierPriceType() == '1') {
