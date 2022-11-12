@@ -19,6 +19,7 @@ class Helper extends AbstractHelper
     protected $_coreRegistry;
 
     protected $storeManager;
+    protected $logger;
 
     /**
      * Helper constructor.
@@ -40,7 +41,7 @@ class Helper extends AbstractHelper
         $this->storeManager = $storeManager;
         $this->_coreRegistry = $registry;
         $this->serializer = $serializer;
-        $this->_logger = $logger;
+        $this->logger = $logger;
     }
 
     public function registry($key)
@@ -67,9 +68,9 @@ class Helper extends AbstractHelper
     public function debug($e)
     {
         if ($e instanceof \Throwable) {
-            $this->_logger->critical($e->getMessage());
+            $this->logger->critical($e->getMessage());
         } else {
-            $this->_logger->critical($e);
+            $this->logger->critical($e);
         }
     }
 

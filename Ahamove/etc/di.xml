@@ -8,7 +8,7 @@
             </argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magenest\Ahamove\Helper\Logger\Logger" type="Monolog\Logger">
+    <virtualType name="Magenest\Ahamove\Helper\Helper" type="Monolog\Logger">
         <arguments>
             <argument name="name" xsi:type="string">Ahamove</argument>
             <argument name="handlers" xsi:type="array">
@@ -23,10 +23,10 @@
     </virtualType>
     <type name="Magenest\Ahamove\Helper\ShipmentHelper">
         <arguments>
-            <argument name="logger" xsi:type="object">Magenest\Ahamove\Helper\Logger\Logger</argument>
+            <argument name="logger" xsi:type="object">Magenest\Ahamove\Helper\Helper</argument>
         </arguments>
     </type>
-    <type name="Magento\Sales\Block\Adminhtml\Order\View">
-        <plugin name="addRecallDriverButton" type="Magenest\Ahamove\Plugin\Block\Adminhtml\Order\View"/>
-    </type>
+<!--    <type name="Magento\Sales\Block\Adminhtml\Order\View">-->
+<!--        <plugin name="addRecallDriverButton" type="Magenest\Ahamove\Plugin\Block\Adminhtml\Order\View"/>-->
+<!--    </type>-->
 </config>
