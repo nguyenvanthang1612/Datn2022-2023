@@ -3,7 +3,7 @@
     <menu>
         <add id="Magenest_Core::utilities" title="Utilities" translate="title" module="Magenest_Core" sortOrder="15" parent="Magento_Catalog::catalog" dependsOnModule="Magenest_Core" resource="Magento_Catalog::catalog"/>
         <add id="Magenest_Core::main_menu"
-             title="Magenest"
+             title="Magenestt"
              module="Magenest_Core"
              translate="title"
              sortOrder="41"
