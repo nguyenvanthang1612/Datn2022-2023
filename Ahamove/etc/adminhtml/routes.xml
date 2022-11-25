@@ -1,16 +1,5 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2021 Magenest. All rights reserved.
- * See COPYING.txt for license details.
- *
- * Magenest_Rich's extension
- * NOTICE OF LICENSE
- *
- * @category Magenest
- * @package Magenest_Rich's
- */
--->
+
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="admin">
         <route id="ahamove" frontName="ahamove">

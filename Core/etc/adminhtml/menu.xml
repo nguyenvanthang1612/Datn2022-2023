@@ -2,11 +2,11 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Magenest_Core::utilities" title="Utilities" translate="title" module="Magenest_Core" sortOrder="15" parent="Magento_Catalog::catalog" dependsOnModule="Magenest_Core" resource="Magento_Catalog::catalog"/>
-        <add id="Magenest_Core::main_menu"
-             title="Magenestt"
-             module="Magenest_Core"
-             translate="title"
-             sortOrder="41"
-             resource="Magento_Backend::admin"/>
+<!--        <add id="Magenest_Core::main_menu"-->
+<!--             title="Magenestt"-->
+<!--             module="Magenest_Core"-->
+<!--             translate="title"-->
+<!--             sortOrder="41"-->
+<!--             resource="Magento_Backend::admin"/>-->
     </menu>
 </config>
