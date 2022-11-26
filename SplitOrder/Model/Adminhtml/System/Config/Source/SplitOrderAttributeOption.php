@@ -10,9 +10,9 @@ class SplitOrderAttributeOption implements \Magento\Framework\Option\ArrayInterf
     public function toOptionArray()
     {
         return [
-            ['value' => 0, 'label' => __('Split According To Attribute')],
-            ['value' => 1, 'label' => __('One')],
-            ['value' => 2, 'label' => __('Two')],
+            ['value' => 0, 'label' => __('Default')],
+            ['value' => 1, 'label' => __('Split According To Attribute')],
+            ['value' => 2, 'label' => __('Split If Attribute Exists')],
         ];
     }
 }
