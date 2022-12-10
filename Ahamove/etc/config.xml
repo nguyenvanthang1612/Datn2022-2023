@@ -16,7 +16,7 @@
 				<specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
 				<sallowspecific>0</sallowspecific>
 				<api_key>6e2ef98990c4d834fef95f1af7f97fee</api_key>
-				<api_token>5d673dc8eb44d752d7ea35d7</api_token>
+				<api_token>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhaGEiLCJ0eXAiOiJ1c2VyIiwiY2lkIjoiODQ5ODY1MDE2NzAiLCJzdGF0dXMiOiJPTkxJTkUiLCJlb2MiOm51bGwsIm5vYyI6IkFoYW1vdmUgdGVzdCIsImFjY291bnRfc3RhdHVzIjoiQUNUSVZBVEVEIiwiZXhwIjoxNjMwNDkzMjEzLCJwYXJ0bmVyIjoiZHJpbmtpZXMiLCJ0eXBlIjoiYXBpIn0.qwCMZDZqIXZ1AWyvmFTrSahYk-pf0e--bsgq-AQ2mH0</api_token>
 			</ahamove>
 		</carriers>
 	</default>
