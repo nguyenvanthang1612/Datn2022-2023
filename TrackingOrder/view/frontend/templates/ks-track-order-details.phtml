@@ -1,0 +1,177 @@
+<?php
+$ksOrder  = $block->getOrderData() ;
+$status = $ksOrder['status'];
+?>
+<div class="trackingWrapper">
+	<div class="flex mb-25" >
+	    <div class="order-info-unit" ><span class="primary-text" ><?= $block->escapeHtml(__('Order ID')) ?>:</span>#<?= $ksOrder->getIncrementId();?></div>
+	    <div class="order-info-unit" ><span class="primary-text" ><?= $block->escapeHtml(__('Order Date')) ?>:</span>#<?= $block->formatDate($ksOrder->getCreatedAt(),\IntlDateFormatter::LONG);?></div>
+	    <div class="order-info-unit" ><span class="primary-text" ><?= $block->escapeHtml(__('Order Status')) ?>:</span> #<?= $block->escapeHtml($ksOrder->getStatusLabel()) ?></div>
+	</div>
+    <div class="mb-25 order-step-outer">
+	    <div class="justify-content-between progress-bar ">
+		   <div class="order-stepwizard-step">
+			    <?php if($status == 'pending' || $status == 'STATE_OPEN' || $status == 'paypal_canceled_reversal') { ?>
+				    <div class="order-stepwizard-img-set" >
+					    <div class="order-stepwizard-img active">
+					    	<img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/basket-white.svg'); ?>" alt="order-track" />
+					    </div>
+				    </div>
+			    	<p><span class="d-none-mobile" >Items</span> Ordered</p>
+				<?php  } else { ?>
+				    <div class="order-stepwizard-img">
+			           <img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/basket.svg'); ?>" alt="order-track" />
+		            </div>
+		          	<p><span class="d-none-mobile" >Items</span> Ordered</p>
+				<?php } ?>
+			</div>
+			<div class="order-stepwizard-step">
+				<?php if($status == 'processing' || $status == 'pending_payment' || $status == 'payment_review' || $status == 'pending_paypal') { ?>
+				    <div class="order-stepwizard-img-set" >
+					    <div class="order-stepwizard-img active">
+					    	<img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/order-processing-white.svg'); ?>" alt="order-track" />
+					    </div>
+				    </div>
+			    	<p><span class="d-none-mobile" >Order</span> Processing</p>
+				<?php  } else { ?>
+				    <div class="order-stepwizard-img">
+				           <img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/order-processing.svg'); ?>" alt="order-track" />
+				            </div>
+				          <p><span class="d-none-mobile" >Order</span> Processing</p>
+				<?php  } ?>
+			</div>
+			<?php if($status == 'holded') { ?>
+			<div class="order-stepwizard-step">
+			    <div class="order-stepwizard-img-set" >
+				    <div class="order-stepwizard-img active">
+				    	<img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/order-holded-white.svg'); ?>" alt="order-track" /></div>
+				    </div>
+			    	<p><span class="d-none-mobile" >Order</span> Holded</p>
+				</div>
+			<?php  }
+			if($status == 'canceled') { ?>
+				<div class="order-stepwizard-step">
+				    <div class="order-stepwizard-img-set" >
+					    <div class="order-stepwizard-img active">
+					    	<img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/order-cancel-white.svg'); ?>" alt="order-track" />
+					    </div>
+				    </div>
+			    	<p><span class="d-none-mobile" >Order</span> Cancelled</p>
+				</div>
+			<?php  } ?>
+			<div class="order-stepwizard-step">
+				<?php if($status == 'complete') { ?>
+				    <div class="order-stepwizard-img-set" >
+					    <div class="order-stepwizard-img active">
+					    	<img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/order-complete-white.svg'); ?>" alt="order-track" />
+					    </div>
+				    </div>
+			    	<p><span class="d-none-mobile" >Order</span> Completed</p>
+				<?php  } else { ?>
+				    <div class="order-stepwizard-img">
+			           	<img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/order-complete.svg'); ?>" alt="order-track" />
+		            </div>
+			        <p><span class="d-none-mobile" >Order</span> Completed</p>
+				<?php  } ?>
+			</div>
+			<div class="order-stepwizard-step">
+				<?php if($status == 'closed') { ?>
+				    <div class="order-stepwizard-img-set" >
+					    <div class="order-stepwizard-img active">
+					    	<img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/order-closed-white.svg'); ?>" alt="order-track" />
+					    </div>
+				    </div>
+			    	<p><span class="d-none-mobile" >Order</span> Closed</p>
+				<?php  } else { ?>
+				    <div class="order-stepwizard-img">
+			           <img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/order-closed.svg'); ?>" alt="order-track" />
+		            </div>
+		          	<p><span class="d-none-mobile" >Order</span> Closed</p>
+				<?php  } ?>
+			</div>
+		</div>
+	</div>
+	<div class="product data items"
+     data-mage-init='{"mage/tabs": {"openedState": "active", "animate": {"duration": 100}, "active": 0, "disabled": [], "disabledState": "disabled"}}'>
+	    <div class="item title" data-role="collapsible">
+	        <a class="switch" data-toggle="trigger" href="#tab-ordered"><?= $block->escapeHtml(__("Items Ordered"))?></a>
+	    </div>
+	    <div id="tab-ordered" class="item content" data-role="content">
+	    	<?= $block->getChildHtml("ks-order-items");?>
+	    </div>
+  		<?php if($ksOrder->hasInvoices()) { ?>
+		    <div class="item title" data-role="collapsible">
+		        <a class="switch" data-toggle="trigger" href="#tab-invoices"><?= $block->escapeHtml(__("Invoice"))?></a>
+		    </div>
+		    <div id="tab-invoices" class="item content" data-role="content">
+		    	<?= $block->getChildHtml("ks-invoice-items");?></div>
+  		<?php }
+		if ($ksOrder->hasShipments()) { ?>
+		    <div class="item title" data-role="collapsible">
+		        <a class="switch" data-toggle="trigger" href="#tab-shipments"><?= $block->escapeHtml(__("Shipments"))?></a>
+		    </div>
+		    <div id="tab-shipments" class="item content" data-role="content">
+		    	<?= $block->getChildHtml("ks-shipment-items");?>
+		    </div>
+	  	<?php }
+		if ($ksOrder->hasCreditmemos()) { ?>
+		    <div class="item title" data-role="collapsible">
+		        <a class="switch" data-toggle="trigger" href="#tab-refunds"><?= $block->escapeHtml(__("Refunds"))?></a>
+		    </div>
+		    <div id="tab-refunds" class="item content" data-role="content">
+		    	<?= $block->getChildHtml("ks-creditmemo-items");?>
+		    </div>
+	  <?php } ?>
+	</div>
+</div>
+
+<div class="block block-order-details-view">
+	<div class="block-title">
+		<strong><?= $block->escapeHtml(__("Order Information"))?></strong>
+	</div>
+	<div class="block-content">
+  		<?php if (!$ksOrder->getIsVirtual()) : ?>
+			<div class="box box-order-shipping-address">
+	            <strong class="box-title">
+	            	<span><?= $block->escapeHtml(__("Shipping Address"))?></span>
+	            </strong>
+	            <div class="box-content"><?= $block->getKsFormattedAddress($ksOrder->getShippingAddress());?></div>
+	        </div>
+	        <div class="box box-order-shipping-method">
+	            <strong class="box-title">
+	                <span><?= $block->escapeHtml(__("Shipping Method"))?></span>
+	            </strong>
+	            <div class="box-content"><?= $ksOrder['shipping_description'];?></div>
+	            <strong class="box-title">
+	                <span><?= $block->escapeHtml(__("Shipping Amount"))?></span>
+	            </strong>
+	            <div class="box-content"><?= $block->formatValue($ksOrder->getShippingAmount());?>
+	            </div>
+	        </div>
+   		<?php endif; ?>
+		<div class="box box-order-billing-address">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__("Billing Address"))?></span>
+            </strong>
+            <div class="box-content">
+            	<?= $block->getKsFormattedAddress($ksOrder->getBillingAddress());?></div>
+        </div>
+		<div class="box box-order-billing-method">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__("Payment Method"))?></span>
+            </strong>
+            <div class="box-content">
+                <dl class="payment-method checkmemo">
+                    <dt class="title"><?= $ksOrder->getPayment()->getMethodInstance()->getTitle();?></dt>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    require([
+        'jquery',
+        'tabs'], function ($) {
+        $("#element").tabs();
+    });
+</script>

@@ -1,0 +1,81 @@
+<?php
+
+$ksOrder = $block->getOrderData();
+$ksOrderItems  = $ksOrder->getAllItems();
+?>
+<div class="column main">
+    <div class="order-details-items ordered order-items-outer ">
+        <div class="order-title">
+            <strong><?= $block->escapeHtml(__('Items Ordered')) ?></strong>
+        </div>
+        <div class="table-wrapper order-items mb-0">&nbsp;
+            <table class="data table table-order-items" id="my-orders-table" summary="Items Ordered">
+                <caption class="table-caption"><?= $block->escapeHtml(__('Items Ordered')) ?></caption>
+                <thead class="product-table-heading" >
+                    <tr>
+                        <th class="col image"><?= $block->escapeHtml(__('Product Image')) ?></th>
+                        <th class="col name"><?= $block->escapeHtml(__('Product Name')) ?></th>
+                        <th class="col sku"><?= $block->escapeHtml(__('SKU')) ?></th>
+                        <th class="col price"><?= $block->escapeHtml(__('Price')) ?></th>
+                        <th class="col qty"><?= $block->escapeHtml(__('Qty')) ?></th>
+                        <th class="col subtotal"><?= $block->escapeHtml(__('Subtotal')) ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($ksOrderItems as $ksItem) :
+                    if ($ksItem->getParentItem()) :
+                        continue;
+                    endif; ?>
+
+                    <?php
+                        $ksImageHelper  = $this->helper('Magento\Catalog\Helper\Image');
+                        if($ksProduct = $block->getKsProductById($ksItem->getProductId())){
+                            $ksImageUrl = $ksImageHelper->init($ksProduct, 'product_page_image_large')->setImageFile($ksProduct->getImage())->resize(110)->getUrl();
+                        }else{
+                            $ksImageUrl = $ksImageHelper->getDefaultPlaceholderUrl('small_image');;
+                        }
+                    ?>
+                    <tr id="order-item-row-4" >
+                        <td class="col image" data-th="Product Image">
+                            <img src="<?= $ksImageUrl;?>">
+                        </td>
+                        <td class="col name" data-th="Product Name">
+                            <strong class="product name product-item-name">
+                                <?= $block->escapeHtml($ksItem->getName()) ?>
+                            </strong>
+                            <?= $block->getKsProductOptionBlock($ksItem)?>
+                        </td>
+                        <td class="col sku" data-th="sku">
+                            <?= $ksItem->getSku() ?>
+                        </td>
+                        <td class="col price" data-th="Price">
+                            <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax')) ?>">
+                                <span class="cart-price">
+                                    <?= $block->formatValue($ksItem->getPrice()) ?>
+                                </span>
+                            </span>
+                        </td>
+                        <td class="col qty" data-th="Qty">
+                            <ul class="items-qty">
+                                <li class="item">
+                                    <span class="content"><?= (int) $ksItem->getQtyOrdered() ?></span>
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="col subtotal" data-th="Subtotal">
+                            <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax')) ?>">
+                                <span class="cart-price">
+                                    <?= $block->formatValue($ksItem->getRowTotal()) ?>
+                                </span>
+                            </span>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                    <?= $block->getChildHtml('ks_order_totals') ?>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

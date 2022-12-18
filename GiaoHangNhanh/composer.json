@@ -1,5 +1,5 @@
 {
-    "name": "magenest/ahamove",
+    "name": "magenest/giaohangnhanh",
     "description": "",
     "type": "magento2-module",
     "license": "proprietary",
@@ -7,7 +7,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Magenest\\Ahamove\\": ""
+            "Magenest\\GiaoHangNhanh\\": ""
         },
         "files": [
             "registration.php"

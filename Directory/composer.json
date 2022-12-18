@@ -1,5 +1,5 @@
 {
-    "name": "magenest/module-directory",
+    "name": "magenest/directory",
     "description": "Add city, district, ward to customer address",
     "require": {
         "php": "7.0.2|7.0.4|~7.0.6|~7.1.0",

@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<section id="carriers" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="1000" translate="label">
+			<group id="giaohangnhanh" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+				<label>GiaoHangNhanh</label>
+				<field id="active" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select">
+					<label>Enabled</label>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="name" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="text">
+					<label>Method Name</label>
+				</field>
+				<field id="api_token" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="35" translate="label" type="text">
+					<label>Api Token</label>
+					<validate>required-entry</validate>
+				</field>
+				<field id="price_type" translate="label" type="select" sortOrder="36" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Price Type</label>
+					<source_model>Magenest\GiaoHangNhanh\Model\Config\Source\PriceType</source_model>
+				</field>
+				<field id="total_fee" translate="label" type="text" sortOrder="37" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Total Fee</label>
+					<validate>required-entry validate-number validate-zero-or-greater</validate>
+					<depends><field id="price_type">1</field></depends>
+					<comment>Specify price in currency which is configured as "Default Display Currency" in settings on Website level (Main menu / Stores / General / Currency Setup)</comment>
+				</field>
+				<field id="enable_freeshipping" translate="label" type="select" sortOrder="38" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Enable Free Shipping</label>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="freeshipping_subtotal" translate="label" type="text" sortOrder="39" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Free Shipping When Subtotal Greater Than</label>
+					<validate>required-entry validate-number validate-zero-or-greater</validate>
+					<depends>
+						<field id="enable_freeshipping">1</field>
+					</depends>
+					<comment>Specify price in currency which is configured as "Default Display Currency" in settings on Website level (Main menu / Stores / General / Currency Setup)</comment>
+				</field>
+<!--				<field id="free_brand" translate="label" type="multiselect" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="0">-->
+<!--					<label>Free Brands</label>-->
+<!--					<depends>-->
+<!--						<field id="enable_freebrand">1</field>-->
+<!--					</depends>-->
+<!--					<source_model>Magenest\Core\Model\Config\Source\FreeBrands</source_model>-->
+<!--				</field>-->
+				<field id="note_code" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+					<label>Note Code</label>
+					<validate>required-entry</validate>
+					<source_model>Magenest\GiaoHangNhanh\Model\Config\Source\NoteCode</source_model>
+				</field>
+				<field id="sort_order" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="50" translate="label" type="text">
+					<label>Sort Order</label>
+				</field>
+				<field id="title" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="50" translate="label" type="text">
+					<label>Title</label>
+				</field>
+				<field id="sallowspecific" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="60" translate="label" type="select">
+					<label>Ship to Applicable Countries</label>
+					<frontend_class>shipping-applicable-country</frontend_class>
+					<source_model>Magento\Shipping\Model\Config\Source\Allspecificcountries</source_model>
+				</field>
+				<field id="specificcountry" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="70" translate="label" type="multiselect">
+					<label>Ship to Specific Countries</label>
+					<can_be_empty>1</can_be_empty>
+					<source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+				</field>
+				<field id="specificerrmsg" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="80" translate="label" type="textarea">
+					<label>Displayed Error Message</label>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

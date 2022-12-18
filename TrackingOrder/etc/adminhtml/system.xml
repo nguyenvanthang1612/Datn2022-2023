@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+<!--        <tab id="magenest_extensions" translate="label" sortOrder="30" class="ks-tab-image">-->
+<!--            <label>KSOLVES EXTENSIONS</label>-->
+<!--        </tab>-->
+        <section id="trackingorder" translate="label" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Track Order</label>
+            <tab>magenest</tab>
+            <resource>Magenest_Trackingorder::trackingorder_config</resource>
+            <group id="trackordersetting" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Track Order Setting</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Module Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="allow_toplink" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow for top link</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="allow_topmenu" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow for top menu</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="button_color" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Button Color</label>
+                    <frontend_model>Magenest\TrackingOrder\Block\Adminhtml\Color</frontend_model>
+                </field>
+                <field id="button_text" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Button Text</label>
+                    <validate>validate-length maximum-length-30</validate>
+                </field>
+                <field id="button_text_color" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Button Text Color</label>
+                    <frontend_model>Magenest\TrackingOrder\Block\Adminhtml\Color</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

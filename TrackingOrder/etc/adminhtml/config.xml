@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <trackingorder>
+            <trackordersetting>
+                <enable>1</enable>
+                <allow_toplink>1</allow_toplink>
+                <allow_topmenu>1</allow_topmenu>
+                <button_color>#3a64c4</button_color>
+                <button_text>Track Order</button_text>
+            </trackordersetting>
+        </trackingorder>
+    </default>
+</config>

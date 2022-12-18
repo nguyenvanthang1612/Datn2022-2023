@@ -1,0 +1,75 @@
+<?php
+/** @var Magenest\Trackingorder\Block\Index $block */
+$ksButtonColor = $block->getButtonColor();
+$ksButtonText = $block->getButtonText();
+$ksButtonTextColor = $block->getButtonTextColor();
+if ($block->getModuleStatus() == 0) {
+    $ksResult='<h1 class="font-weight-bold mb-0 text-center" style="color:red">Sorry <h1>';
+    $ksResult.='<h2 class="font-weight-bold mb-0 text-center" style="color:red">Your Extension is disable.<h2>';
+    $ksResult.='<br><h2 class="font-weight-bold mb-0 text-center" style="color:green"> Please enable the Extension.</h2>';
+    echo $ksResult;
+} else {
+    ?>
+ <style type="text/css">
+  button.primary-btn {
+    background-color: <?= $ksButtonColor ?>;
+    color: <?= $ksButtonTextColor ?>;
+    border: 1px solid <?= $ksButtonColor ?>;
+    box-shadow: none;
+    border-radius: 2px;
+    transition: 0.3s ease-in-out;
+  }
+
+  button.primary-btn:hover {
+    background: transparent;
+    color: <?= $ksButtonColor ?>;
+  }
+  #check-order-msg  {
+    color:red;
+  }
+  #check-email-msg {
+    color:red;
+  }
+</style>
+<div class="bt_trackorder" id="showInfo"></div>
+<div class="luma-form flex" >
+  <div class="luma-form-left flex-center flex-column" >
+      <img src="<?= $this->getViewFileUrl('Magenest_TrackingOrder::images/Icon.svg'); ?>" class="luma-track-order-img" alt="order-truck">
+      <h2 class="font-weight-bold mb-0" ><?= $block->escapeHtml(__("Track your Order"))?></h2>
+  </div>
+  <div class="luma-form-right" >
+    <form  id="track-order" name="track-order" action="<?= $block->getBaseUrl() . 'trackingorder/index/search'; ?>" class="luma-form-outer" method="post" enctype='multipart/form-data'  data-mage-init='{"validation": {}}'>
+      <fieldset class="fieldset">
+          <div class="field order_id">
+              <div class="control mb-25">
+                  <label class="luma-form-label" ><?= $block->escapeHtml(__("Order ID"))?></label>
+                  <input class="luma-form-field" name="order_id" id="orderId" type="text" placeholder="Enter Order ID" autocomplete="off" data-validate="{required:true,'validate-number':true}">
+                  <span id="check-order-msg"></span>
+              </div>
+          </div>
+          <?php if ($block->checkCustomerLogin() == false): ?>
+          <div class="field email_address">
+              <div class="control">
+                  <label class="luma-form-label" ><?= $block->escapeHtml(__("Email"))?></label>
+                  <input class="luma-form-field" name="email_address" id="emailAddress"  type="text" placeholder="Enter Email" autocomplete="off" data-validate="{required:true, 'validate-email':true}">
+                  <span id="check-email-msg"></span>
+              </div>
+          </div>
+          <?php endif; ?>
+      </fieldset>
+      <div class="actions-toolbar text-center">
+            <button class="primary-btn" type="submit" title="Submit" id="submit"><?= $block->escapeHtml(__("Track Order"))?></button>
+      </div>
+    </form>
+  </div>
+</div>
+<?php
+} ?>
+<script type="text/javascript">
+    require(['jquery', 'jquery/ui'], function($){
+      $(document).ready(function(){
+          var ksValue ="<?php echo $ksButtonText;?>";
+          $("#submit").text(ksValue);
+      });
+    });
+</script>

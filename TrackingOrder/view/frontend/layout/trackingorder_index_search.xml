@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+	<head>
+  		<css src="Magenest_TrackingOrder::css/bt.css"/>
+   		<css src="Magenest_TrackingOrder::css/style.css"/>
+	</head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magenest\TrackingOrder\Block\OrderStatus" name="trackingorder_search" template="Magenest_TrackingOrder::ks-track-order-details.phtml">
+                <block class="Magenest\TrackingOrder\Block\OrderStatus" name="ks-order-items" template="Magenest_TrackingOrder::items/ks-order-items.phtml">
+                    <block class="Magenest\TrackingOrder\Block\KsOrderTotals" name="ks_order_totals" template="Magento_Sales::order/totals.phtml">
+                        <arguments>
+                            <argument name="label_properties" xsi:type="string">colspan="5" class="mark"</argument>
+                            <argument name="value_properties" xsi:type="string">class="amount"</argument>
+                        </arguments>
+                        <block class="Magento\Tax\Block\Sales\Order\Tax" name="tax" template="Magento_Tax::order/tax.phtml"/>
+                    </block>
+                </block>
+                <block class="Magenest\TrackingOrder\Block\OrderStatus" name="ks-invoice-items" template="Magenest_TrackingOrder::items/ks-invoice-items.phtml">
+                    <block class="Magento\Sales\Block\Order\Invoice\Totals" name="ks_invoice_totals" template="Magento_Sales::order/totals.phtml" cacheable="false">
+                        <arguments>
+                            <argument name="label_properties" xsi:type="string">colspan="5" class="mark"</argument>
+                            <argument name="value_properties" xsi:type="string">class="amount"</argument>
+                        </arguments>
+                        <block class="Magento\Tax\Block\Sales\Order\Tax" name="invoice.tax" template="Magento_Tax::order/tax.phtml"/>
+                    </block>
+                </block>
+                <block class="Magenest\TrackingOrder\Block\OrderStatus" name="ks-shipment-items" template="Magenest_TrackingOrder::items/ks-shipment-items.phtml"/>
+                <block class="Magenest\TrackingOrder\Block\OrderStatus" name="ks-creditmemo-items" template="Magenest_TrackingOrder::items/ks-creditmemo-items.phtml">
+                    <block class="Magento\Sales\Block\Order\Creditmemo\Totals" name="ks_creditmemo_totals" template="Magento_Sales::order/totals.phtml" cacheable="false">
+                        <arguments>
+                            <argument name="label_properties" xsi:type="string">colspan="7" class="mark"</argument>
+                            <argument name="value_properties" xsi:type="string">class="amount"</argument>
+                        </arguments>
+                        <block class="Magento\Tax\Block\Sales\Order\Tax" name="creditmemo.tax" template="Magento_Tax::order/tax.phtml"/>
+                    </block>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
