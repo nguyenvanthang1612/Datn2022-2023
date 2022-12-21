@@ -1,22 +1,21 @@
 <?php
 
-
 namespace Magenest\GiaoHangNhanh\Model\Carrier;
 
+use Magenest\GiaoHangNhanh\Helper\CityProvinceProvider;
+use Magenest\GiaoHangNhanh\Helper\DistrictGhnHelper;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Xml\Security;
-use Magento\OfflinePayments\Model\Checkmo;
-use Magento\Quote\Model\Quote\Address\RateRequest;
-use Magento\Sales\Model\Order;
 use Magento\Inventory\Model\ResourceModel\Source;
 use Magento\Inventory\Model\SourceFactory;
-use Magenest\GiaoHangNhanh\Helper\CityProvinceProvider;
-use \Magento\Framework\Message\ManagerInterface;
-use Magenest\GiaoHangNhanh\Helper\DistrictGhnHelper;
-use Magento\Sales\Model\ResourceModel\Order as ResourceOrder;
+use Magento\Quote\Model\Quote\Address\RateRequest;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
+use Magento\Sales\Model\ResourceModel\Order as ResourceOrder;
+
 //use Magenest\ShopByBrand\Model\BrandFactory;
 //use Magenest\ShopByBrand\Model\ResourceModel\Brand;
 /**
@@ -24,7 +23,8 @@ use Magento\Sales\Model\OrderFactory;
  * @package Magenest\GiaoHangNhanh\Model\Carrier
  */
 class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnline implements
-    \Magento\Shipping\Model\Carrier\CarrierInterface , \Magenest\GiaoHangNhanh\Api\GiaoHangNhanhInterface
+    \Magento\Shipping\Model\Carrier\CarrierInterface,
+    \Magenest\GiaoHangNhanh\Api\GiaoHangNhanhInterface
 {
     const SHOP_PAID = 1;
 
@@ -92,10 +92,10 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @var \Magento\Framework\App\Request\Http
      */
     protected $request;
-//	/**
-//	 * @var \Magenest\Core\Helper\OrderHelper
-//	 */
-//	protected $orderHelper;
+    //	/**
+    //	 * @var \Magenest\Core\Helper\OrderHelper
+    //	 */
+    //	protected $orderHelper;
 
     /**
      * @var Session
@@ -137,7 +137,8 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
-        \Psr\Log\LoggerInterface $logger, Security $xmlSecurity,
+        \Psr\Log\LoggerInterface $logger,
+        Security $xmlSecurity,
         \Magento\Shipping\Model\Simplexml\ElementFactory $xmlElFactory,
         \Magento\Shipping\Model\Rate\ResultFactory $rateFactory,
         \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
@@ -162,7 +163,8 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         \Magento\Framework\App\Request\Http $request,
 //		\Magenest\Core\Helper\OrderHelper $orderHelper,
         Session $session,
-        array $data = [])
+        array $data = []
+    )
     {
         $this->httpClientFactory = $httpClientFactory;
         $this->inventoryResource = $inventoryResource;
@@ -175,7 +177,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $this->resourceOrder = $resourceOrder;
         $this->orderFactory = $orderFactory;
         $this->request = $request;
-//		$this->orderHelper = $orderHelper;
+        //		$this->orderHelper = $orderHelper;
         $this->checkoutSession = $session;
         parent::__construct(
             $scopeConfig,
@@ -193,7 +195,8 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
             $currencyFactory,
             $directoryData,
             $stockRegistry,
-            $data);
+            $data
+        );
     }
 
     /**
@@ -251,14 +254,13 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
                         $method->setCarrier($this->_code);
                         $method->setCarrierTitle($this->getConfigData('title'));
 
-                        $method->setMethod($this->_code."-free");
-                        $method->setMethodTitle($this->getConfigData('name')." FREESHIP");
+                        $method->setMethod($this->_code . "-free");
+                        $method->setMethodTitle($this->getConfigData('name') . " FREESHIP");
                         $method->setPrice(0.0);
                         $method->setCost(0.0);
                         $result->append($method);
                     }
                 } catch (\Exception $e) {
-
                 }
             }
         }
@@ -283,7 +285,8 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @return \Magento\Quote\Api\Data\ShippingMethodInterface[]
      * @throws \Zend_Http_Client_Exception
      */
-    public function estimateShipping($cartId, $street, $region, $city){
+    public function estimateShipping($cartId, $street, $region, $city)
+    {
         $priceType = $this->_scopeConfig->getValue('carriers/giaohangnhanh/price_type');
         /** get weight */
         $weight = 0;
@@ -292,8 +295,8 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $quoteItem = $this->quoteItemFactory->create();
         $this->itemResourceModel->load($quoteItem, $cartId);
         $products = $quoteItem->getAllItems();
-        foreach($products as $product){
-            if($product->getWeight()){
+        foreach ($products as $product) {
+            if ($product->getWeight()) {
                 $weight += ($product->getWeight() * $poundToKg * $product->getQty() * 1000);
             }
         }
@@ -314,9 +317,10 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $freeShipping = $this->_scopeConfig->getValue('carriers/giaohangnhanh/enable_freeshipping');
         $freeShippingPrice = $this->_scopeConfig->getValue('carriers/giaohangnhanh/freeshipping_subtotal');
         $enableFreeBrand = $this->_scopeConfig->getValue('carriers/giaohangnhanh/enable_freebrand');
-        if($enableFreeBrand)
+        if ($enableFreeBrand) {
             $checkBrand = $this->checkBrand($quoteItem);
-        if($freeShipping && $quoteItem->getSubtotal() >= $freeShippingPrice || $checkBrand){
+        }
+        if ($freeShipping && $quoteItem->getSubtotal() >= $freeShippingPrice || $checkBrand) {
             return [[
                 'day_ship' => number_format($freeShippingPrice) . ' VND',
                 'service_name' => number_format($freeShippingPrice) . ' VND',
@@ -327,9 +331,9 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
                 'date_ship' => ''
             ]];
         }
-        if(!$priceType){
-            if(!empty($serviceArray)){
-                foreach($serviceArray['data'] as &$service){
+        if (!$priceType) {
+            if (!empty($serviceArray)) {
+                foreach ($serviceArray['data'] as &$service) {
                     $service['day_ship'] = __('Delivery on ');
                     $service['freeShip'] = false;
                     $service['samePrice'] = false;
@@ -338,7 +342,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
                 }
                 $result = $serviceArray['data'];
             }
-        }else {
+        } else {
             $fixedPrice = $this->_scopeConfig->getValue('carriers/giaohangnhanh/total_fee');
             $result[] = [
                 'day_ship' => __('Flat Delivery Fee'),
@@ -351,7 +355,6 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
             ];
         }
 
-
         return $result;
     }
 
@@ -362,15 +365,16 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @return int
      * @throws \Zend_Http_Client_Exception
      */
-    public function getDistrictId($region, $city, $token) {
+    public function getDistrictId($region, $city, $token)
+    {
         $districtId = 0;
         $districtArray = $this->districtHelper->getDistrictData();
         $cityData = $this->cityProvinceProvider->getCityById($city);
         $cityName = is_array($cityData) ? $cityData['name'] : $city;
-        if($cityName){
+        if ($cityName) {
             $region = $this->cityProvinceProvider->stripVN(mb_strtolower($region, 'UTF-8'));
             $cityName = $this->cityProvinceProvider->stripVN(mb_strtolower($cityName, 'UTF-8'));
-            foreach ($districtArray as $district){
+            foreach ($districtArray as $district) {
                 $provinceName = $this->cityProvinceProvider->stripVN(mb_strtolower($district['ProvinceName'], 'UTF-8'));
                 $miningText = $this->cityProvinceProvider->stripVN(mb_strtolower($district['MiningText'], 'UTF-8'));
                 $districtName = $this->cityProvinceProvider->stripVN(mb_strtolower($district['DistrictName'], 'UTF-8'));
@@ -385,8 +389,8 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
                 if ((!$miningText || !$provinceName)) {
                     continue;
                 } else {
-                    if(($provinceName == $cityName || strstr($provinceName, $cityName) != false || strstr($cityName, $provinceName) != false)  &&
-                        (strstr($miningText, $region) != false )){
+                    if (($provinceName == $cityName || strstr($provinceName, $cityName) != false || strstr($cityName, $provinceName) != false)  &&
+                        (strstr($miningText, $region) != false)) {
                         $districtId = $district['DistrictID'];
                         break;
                     }
@@ -405,9 +409,11 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @return array|mixed
      * @throws \Zend_Http_Client_Exception
      */
-    public function getAllAvailableServiceApi($token, $weight, $formDistrictId, $toDistrictId) {
-        if($formDistrictId == 0 || $toDistrictId == 0)
+    public function getAllAvailableServiceApi($token, $weight, $formDistrictId, $toDistrictId)
+    {
+        if ($formDistrictId == 0 || $toDistrictId == 0) {
             return [];
+        }
         $param = [
             "token" => $token,
             "weight" => $weight ? $weight : 1000,
@@ -416,28 +422,28 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         ];
         $uri = "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district";
         $response = $this->callApi($param, $uri);
-        if(!empty($response)){
+        if (!empty($response)) {
             $response = json_decode($this->callApi($param, $uri), true);
-            if(!isset($response['data']) && $response['message'] != 'Success'){
+            if (!isset($response['data']) && $response['message'] != 'Success') {
                 return [];
             }
         }
         return $response;
     }
 
-    public function getSmallestPriceShip ($services) {
+    public function getSmallestPriceShip($services)
+    {
         $min = 0;
         $service_key = 0;
         if (isset($services['data'])) {
-            foreach ($services['data'] as $service){
-                if(!$min){
-                    $min = $service['ServiceFee'];
-                    $service_key = $service['ServiceID'];
-                }else if($min > $service['ServiceFee']){
-                    $min = $service['ServiceFee'];
-                    $service_key = $service['ServiceID'];
+            foreach ($services['data'] as $service) {
+                if (!$min) {
+                    $min = $service['ServiceFee'] ?? 0;
+                    $service_key = $service['ServiceID'] ?? 0;
+                } elseif ($min > $service['ServiceFee']) {
+                    $min = $service['ServiceFee'] ?? 0;
+                    $service_key = $service['ServiceID'] ?? 0;
                 }
-
             }
             $this->shipmentFee = $min;
             return $service_key;
@@ -452,12 +458,14 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @return string
      * @throws \Zend_Http_Client_Exception
      */
-    public function callApi($param, $uri) {
+    public function callApi($param, $uri)
+    {
         $client = $this->httpClientFactory->create();
         $client->setUri($uri);
         $client->setMethod(\Zend_Http_Client::POST);
         $client->setHeaders(\Zend_Http_Client::CONTENT_TYPE, 'application/json');
-        $client->setHeaders('Accept','application/json');
+        $client->setHeaders('Accept', 'application/json');
+        $client->setHeaders('token', '181c1778-521d-11ed-b26c-02ed291d830a');
         $client->setRawData(json_encode($param, true));
         return $client->request()->getBody();
     }
@@ -470,7 +478,8 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @return int
      * @throws \Zend_Http_Client_Exception
      */
-    public function getSourceData($region_id, $city_id, $token){
+    public function getSourceData($region_id, $city_id, $token)
+    {
         $city = $this->cityProvinceProvider->getCityById($city_id);
         $district = $this->cityProvinceProvider->getProvinceById($city_id, $region_id);
         $cityName = is_array($city) ? $city['name'] : '';
@@ -490,7 +499,8 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Zend_Http_Client_Exception
      */
-    public function createOrder ($shipment, $weight, $length, $width, $height, $type, $result) {
+    public function createOrder($shipment, $weight, $length, $width, $height, $type, $result)
+    {
         /** @var Order $order */
         $order = $shipment->getOrder();
         /** Get config value */
@@ -502,23 +512,23 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         /** get District */
         $sourceItem = $this->sourceFactory->create();
         $this->inventoryResource->load($sourceItem, 'default', 'source_code');
-//		$fromDistrictId = $this->getSourceData($sourceItem->getRegion(), $sourceItem->getCity(), $token);
-//		$toDistrictId = $this->getDistrictId($order->getShippingAddress()->getRegion(), $order->getShippingAddress()->getCity(), $token);
+        //		$fromDistrictId = $this->getSourceData($sourceItem->getRegion(), $sourceItem->getCity(), $token);
+        //		$toDistrictId = $this->getDistrictId($order->getShippingAddress()->getRegion(), $order->getShippingAddress()->getCity(), $token);
         $fromDistrictId = '1442';
         $toDistrictId ="1443";
         $serviceArray = $this->getAllAvailableServiceApi($token, (int)$weight, $fromDistrictId, $toDistrictId);
         if (!$serviceArray) {
-            return $result->setErrors("Create Giao Hang Nhanh Order Fail: Address is not supported" );
+            return $result->setErrors("Create Giao Hang Nhanh Order Fail: Address is not supported");
         }
 
         $message = "Số lượng {$shipment->getTotalQty()}";
         $telephone = $order->getShippingAddress()->getTelephone();
         if ($telephone[0] != "0") {
-            $telephone = "0".$telephone;
+            $telephone = "0" . $telephone;
         }
         $clientTelephone = $sourceItem->getSourcePhone();
-        if ($clientTelephone[0] != "0") {
-            $clientTelephone = "0".$clientTelephone;
+        if (isset($clientTelephone) && $clientTelephone[0] != "0") {
+            $clientTelephone = "0" . $clientTelephone;
         }
 
         $serviceId = $this->getSmallestPriceShip($serviceArray);
@@ -539,7 +549,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
             "FromDistrictID" => $fromDistrictId,
             "ToDistrictID" => $toDistrictId,
             "ExternalCode" => $order->getIncrementId() ?: '',
-            "Note" => $message.($order->getCustomerNote() ? ' - '.$order->getCustomerNote() : ""),
+            "Note" => $message . ($order->getCustomerNote() ? ' - ' . $order->getCustomerNote() : ""),
             "ClientContactName"=> $sourceItem->getName() ? $sourceItem->getName() : "Elise",
             "ClientContactPhone" => $clientTelephone,
             "ClientAddress" => $sourceItem->getStreet(),
@@ -548,7 +558,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
             "ShippingAddress"=> $order->getShippingAddress()->getStreet()[0],
             "CoDAmount" => $codAmount,
             "NoteCode"=> $noteCode,
-            "ServiceID" => (int)($order->getShippingServiceId() ? : $serviceId),
+            "ServiceID" => (int)($order->getShippingServiceId() ?: $serviceId),
             "FromLat" => $sourceItem->getLatitude() ? $sourceItem->getLatitude() : "",
             "FromLng" => $sourceItem->getLongitude() ? $sourceItem->getLongitude() : "",
             "Content"=> $order->getCustomerNote() ? $order->getCustomerNote() : "",
@@ -570,18 +580,18 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $uri = 'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create';
 //        $uri = 'https://console.ghn.vn/api/v1/apiv3/CreateOrder';
         $response = json_decode($this->callApi($params, $uri), true);
-        if($response['msg'] == 'Success'){
+        if ($response['message'] == 'Success') {
             $orderCode = $response['data']['OrderCode'];
             $order->setData('api_order_id', $orderCode);
             $order->setData('shipment_type', $type);
             $order->setData('shipment_fee', $this->shipmentFee);
 //            $order->setData('transfer_amount', $codAmount);
             $this->resourceOrder->save($order, 'ReadyToPick');
-//			$this->orderHelper->afterShipmentSms($order);
+            //			$this->orderHelper->afterShipmentSms($order);
             $this->messageManager->addSuccessMessage("Create Giao Hang Nhanh Order Success");
+        } else {
+            $result->setErrors("Create Giao Hang Nhanh Order Fail: " . $response['message']);
         }
-        else
-            $result->setErrors("Create Giao Hang Nhanh Order Fail: ". $response['msg'] );
     }
 
     /**
@@ -603,10 +613,11 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $result->setShippingLabelContent('GHN Service');
         if (!$request->getOrderShipment()->getOrder()->getApiOrderId()) {
             $packages = $request->getPackages();
-            foreach($packages as $package) {
-                if($package['params']['weight'])
+            foreach ($packages as $package) {
+                if ($package['params']['weight']) {
                     $weight += ($package['params']['weight_units'] ==  'POUND') ? ($package['params']['weight'] * $poundToKg)
                         : $package['params']['weight'] * 1000;
+                }
                 $length = $package['params']['length'];
                 $width = $package['params']['width'];
                 $height = $package['params']['height'];
@@ -621,8 +632,9 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @param array $data
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
-    public function updateShipmentStatus($data = []) {
-        if(!empty($data) && isset($data['OrderCode'])){
+    public function updateShipmentStatus($data = [])
+    {
+        if (!empty($data) && isset($data['OrderCode'])) {
             $orderCode = $data['OrderCode'];
             $order = $this->orderFactory->create();
             $this->resourceOrder->load($order, $orderCode, 'api_order_id');
@@ -643,12 +655,14 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @param $params
      * @throws \Zend_Http_Client_Exception
      */
-    public function cancelOrder($params){
+    public function cancelOrder($params)
+    {
         $uri = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel";
         $this->callApi($params, $uri);
     }
 
-    public function processAdditionalValidation(\Magento\Framework\DataObject $request) {
+    public function processAdditionalValidation(\Magento\Framework\DataObject $request)
+    {
         return true;
     }
 
@@ -657,12 +671,13 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         return true;
     }
 
-    public function checkBrand($quote) {
+    public function checkBrand($quote)
+    {
         $freeBrand = $this->_scopeConfig->getValue('carriers/giaohangnhanh/free_brand');
         $brandIds = explode(',', $freeBrand);
-        foreach ($quote->getAllItems() as $item){
+        foreach ($quote->getAllItems() as $item) {
             if (!$item->getParentItemId()) {
-                if(!in_array($item->getProduct()->getBrandId(), $brandIds)){
+                if (!in_array($item->getProduct()->getBrandId(), $brandIds)) {
                     return false;
                 }
             }

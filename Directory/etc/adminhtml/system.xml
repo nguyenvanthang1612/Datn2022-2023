@@ -17,11 +17,11 @@
                     <upload_dir config="system" scope_info="1">directory</upload_dir>
                     <comment><![CDATA[Please visit <a href="https://danhmuchanhchinh.gso.gov.vn/" target="_blank"><span>this link</span></a> to download latest file.]]></comment>
                 </field>
-                <field id="update_button" translate="button_label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <button_label>Update Directory Data</button_label>
-                    <frontend_model>Magenest\Directory\Block\System\Config\Form\Button\Update</frontend_model>
-                    <comment><![CDATA[Please upload Directory Data first]]></comment>
-                </field>
+<!--                <field id="update_button" translate="button_label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">-->
+<!--                    <button_label>Update Directory Data</button_label>-->
+<!--                    <frontend_model>Magenest\Directory\Block\System\Config\Form\Button\Update</frontend_model>-->
+<!--                    <comment><![CDATA[Please upload Directory Data first]]></comment>-->
+<!--                </field>-->
             </group>
         </section>
     </system>
