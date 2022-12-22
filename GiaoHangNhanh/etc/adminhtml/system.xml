@@ -44,6 +44,21 @@
 <!--					</depends>-->
 <!--					<source_model>Magenest\Core\Model\Config\Source\FreeBrands</source_model>-->
 <!--				</field>-->
+                <field id="length" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="35" translate="label" type="text">
+                    <label>Length</label>
+                    <validate>required-entry</validate>
+                    <comment>Chiều dài phải lớn 0 và nhỏ hơn 200(cm)</comment>
+                </field>
+                <field id="width" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="35" translate="label" type="text">
+                    <label>Width</label>
+                    <validate>required-entry</validate>
+                    <comment>Chiều rộng phải lớn 0 và nhỏ hơn 200(cm)</comment>
+                </field>
+                <field id="height" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="35" translate="label" type="text">
+                    <label>Height</label>
+                    <validate>required-entry</validate>
+                    <comment>Chiều cao phải lớn 0 và nhỏ hơn 200(cm)</comment>
+                </field>
 				<field id="note_code" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
 					<label>Note Code</label>
 					<validate>required-entry</validate>
