@@ -164,8 +164,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
 //		\Magenest\Core\Helper\OrderHelper $orderHelper,
         Session $session,
         array $data = []
-    )
-    {
+    ) {
         $this->httpClientFactory = $httpClientFactory;
         $this->inventoryResource = $inventoryResource;
         $this->sourceFactory = $sourceFactory;
@@ -460,15 +459,27 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      */
     public function callApi($param, $uri)
     {
-        $client = $this->httpClientFactory->create();
-        $client->setUri($uri);
-        $client->setMethod(\Zend_Http_Client::POST);
-        $client->setHeaders(\Zend_Http_Client::CONTENT_TYPE, 'application/json');
-        $client->setHeaders('Accept', 'application/json');
-        $client->setHeaders('token', '181c1778-521d-11ed-b26c-02ed291d830a');
-        $client->setParameterPost($param);
-        //$client->setRawData(json_encode($param, true));
-        return $client->request()->getBody();
+//        $client = $this->httpClientFactory->create();
+//        $client->setUri($uri);
+//        $client->setMethod(\Zend_Http_Client::POST);
+//        $client->setHeaders(\Zend_Http_Client::CONTENT_TYPE, 'application/json');
+//        $client->setHeaders('Accept', 'application/json');
+//        $client->setHeaders('token', '181c1778-521d-11ed-b26c-02ed291d830a');
+//        $client->setParameterPost($param);
+//        //$client->setRawData(json_encode($param, true));
+//        return $client->request()->getBody();
+        $data_string = json_encode($param);
+        $curl = curl_init($uri);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_URL, $uri);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'token: 181c1778-521d-11ed-b26c-02ed291d830a',
+            'Content-Type: application/json',
+            'Accept: application/json'
+        ]);
+        return curl_exec($curl);
     }
 
     /**
@@ -576,11 +587,11 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
 //        ];
         $items = $shipment->getItems();
         $pItems= [];
-        foreach ($items as $item){
+        foreach ($items as $item) {
             $pItems[] = [
                 "name"=> $item->getName(),
                 "code"=> $item->getSku(),
-                "quantity"=> $item->getData('qty_invoiced'),
+                "quantity"=> $item->getData('qty'),
                 "price"=> (int)$item->getPrice(),
                 "length"=> 12,
                 "width"=> 12,
@@ -631,10 +642,9 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
             $params['insurance_value'] = (int)$order->getGrandTotal();
         }
         $uri = 'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create';
-//        $uri = 'https://console.ghn.vn/api/v1/apiv3/CreateOrder';
         $response = json_decode($this->callApi($params, $uri), true);
         if ($response['message'] == 'Success') {
-            $orderCode = $response['data']['OrderCode'];
+            $orderCode = $response['data']['client_order_code'];
             $order->setData('api_order_id', $orderCode);
             $order->setData('shipment_type', $type);
             $order->setData('shipment_fee', $this->shipmentFee);

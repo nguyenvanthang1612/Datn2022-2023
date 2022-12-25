@@ -1,0 +1,53 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="magenest_store_locator" resource="default" engine="innodb" comment="City Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Store Locator Id"/>
+        <column xsi:type="varchar" name="name" length="250" nullable="false" comment="Store Name"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated Time" />
+        <column xsi:type="varchar" name="image" length="250" nullable="true" comment="Store Image"/>
+        <column xsi:type="varchar" name="email" length="250" nullable="true" comment="Store Email"/>
+        <column xsi:type="varchar" name="phone_number" length="50" nullable="true" comment="Store Phone Number"/>
+        <column xsi:type="varchar" name="fax" length="50" nullable="true" comment="Store Fax"/>
+        <column xsi:type="varchar" name="website" length="250" nullable="true" comment="Store Website"/>
+        <column xsi:type="varchar" name="street_address" nullable="true" comment="Address"/>
+        <column xsi:type="varchar" name="country" length="250" nullable="true" comment="Country"/>
+        <column xsi:type="varchar" name="state" length="250" nullable="true" comment="State"/>
+        <column xsi:type="varchar" name="city" length="250" nullable="true" comment="City"/>
+        <column xsi:type="varchar" name="zipcode" length="250" nullable="true" comment="Zip Code"/>
+        <column xsi:type="varchar" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="varchar" name="trading_hours" nullable="true" comment="Trading Hours"/>
+        <column xsi:type="varchar" name="radius" length="64" nullable="true" comment="Radius"/>
+        <column xsi:type="varchar" name="zoom_level" length="64" nullable="true" comment="Zoom Level"/>
+        <column xsi:type="int" name="status" nullable="false" default="0" comment="Store Status"/>
+        <column xsi:type="varchar" name="lat" nullable="true" length="50" default="" comment="Latitude"/>
+        <column xsi:type="varchar" name="lng" nullable="true" length="50" default="" comment="Longitude"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STORE_LOCATOR_UNIQUE" indexType="btree">
+            <column name="name"/>
+        </index>
+    </table>
+    <table name="magenest_store_locator_store" resource="default" engine="innodb" comment="City Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Store Locator Store Id"/>
+        <column xsi:type="int" name="storelocator_id" unsigned="true" comment="Store Locator Id"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" identity="false" comment="Store Id"/>
+        <index referenceId="STORE_LOCATOR_STORE_INDEX" indexType="btree">
+            <column name="storelocator_id"/>
+            <column name="store_id"/>
+        </index>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MAGENEST_STORE_LOCATOR_STORE_STORELOCATOR_ID_MAGENEST_STORE_LOCATOR_ID"
+                    table="magenest_store_locator_store" column="storelocator_id" referenceTable="magenest_store_locator"
+                    referenceColumn="id" onDelete="SET NULL" />
+        <constraint xsi:type="foreign" referenceId="MAGENEST_STORE_LOCATOR_STORE_STORE_ID_STORE_ID"
+                    table="magenest_store_locator_store" column="store_id" referenceTable="store"
+                    referenceColumn="store_id" onDelete="SET NULL" />
+    </table>
+</schema>
