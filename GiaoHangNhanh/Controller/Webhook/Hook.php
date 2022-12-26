@@ -7,6 +7,7 @@
  */
 
 namespace Magenest\GiaoHangNhanh\Controller\Webhook;
+
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Framework\App\RequestInterface;
@@ -40,20 +41,18 @@ class Hook extends \Magento\Framework\App\Action\Action implements CsrfAwareActi
         \Magento\Framework\App\Request\Http $request,
         \Psr\Log\LoggerInterface $logger,
         \Magenest\GiaoHangNhanh\Model\Carrier\GiaoHangNhanh $helper
-    )
-    {
+    ) {
         $this->_request = $request;
         $this->_helper = $helper;
         $this->_logger = $logger;
         parent::__construct($context);
     }
 
-
     public function execute()
     {
         $content = json_decode(urldecode($this->_request->getContent()), true);
         if (is_array($content)) {
-        	$this->_logger->debug(urldecode($this->_request->getContent()));
+            $this->_logger->debug(urldecode($this->_request->getContent()));
             $this->_helper->updateShipmentStatus($content);
         }
     }

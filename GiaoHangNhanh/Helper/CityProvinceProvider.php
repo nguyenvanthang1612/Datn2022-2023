@@ -33,7 +33,7 @@ class CityProvinceProvider extends AbstractHelper
         Reader $moduleReader,
         Json $jsonReader,
         DirectoryHelper $directoryHelper
-    ){
+    ) {
         $this->directoryHelper = $directoryHelper;
         $this->jsonReader = $jsonReader;
         $this->moduleReader = $moduleReader;
@@ -44,9 +44,9 @@ class CityProvinceProvider extends AbstractHelper
     protected function initData()
     {
         $directory = $this->moduleReader->getModuleDir('view', 'Magenest_GiaoHangNhanh');
-        $jsonFile = $directory."/frontend/web/json/location_converted.json";
+        $jsonFile = $directory . "/frontend/web/json/location_converted.json";
         $this->cities = $this->jsonReader->fromFile($jsonFile);
-        foreach($this->cities as $key => &$city) {
+        foreach ($this->cities as $key => &$city) {
             foreach ($city['district'] as &$district) {
                 $district['code'] = $district['district_code'];
             }
@@ -74,7 +74,7 @@ class CityProvinceProvider extends AbstractHelper
         $data = $this->getDistrictOptionsJson();
         $data['config'] = [
             'show_all_regions' => true,
-            'regions_required' => array_map('strval',array_keys($this->cities))
+            'regions_required' => array_map('strval', array_keys($this->cities))
         ];
         return json_encode($data);
     }
@@ -82,12 +82,12 @@ class CityProvinceProvider extends AbstractHelper
     public function getDistrictOptionsJson()
     {
         $data = [];
-        foreach($this->cities as $key => $city) {
+        foreach ($this->cities as $key => $city) {
             if ($key == 771) {
                 $quanData = [];
                 $huyenData = [];
                 foreach ($city['district'] as &$district) {
-                    if(strpos($district['name_with_type'], 'Quận') !== false) {
+                    if (strpos($district['name_with_type'], 'Quận') !== false) {
                         $quanData[] = $district;
                     } else {
                         $huyenData[] = $district;
@@ -181,7 +181,7 @@ class CityProvinceProvider extends AbstractHelper
     {
         $length = strlen($id);
         for ($i = 0; $i < 3 - $length; $i++) {
-            $id = "0".$id;
+            $id = "0" . $id;
         }
 
         return isset($this->cities[$id]) ? $this->cities[$id] : false;
@@ -192,7 +192,7 @@ class CityProvinceProvider extends AbstractHelper
         $city = $this->getCityById($cityId);
         $length = strlen($provinceId);
         for ($i = 0; $i < 3 - $length; $i++) {
-            $provinceId = "0".$provinceId;
+            $provinceId = "0" . $provinceId;
         }
         if ($city) {
             return isset($city['district'][$provinceId]) ? $city['district'][$provinceId] : false;
@@ -200,7 +200,8 @@ class CityProvinceProvider extends AbstractHelper
         return false;
     }
 
-    public function stripVN($str) {
+    public function stripVN($str)
+    {
         $str = preg_replace("/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/", 'a', $str);
         $str = preg_replace("/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/", 'e', $str);
         $str = preg_replace("/(ì|í|ị|ỉ|ĩ)/", 'i', $str);
@@ -216,14 +217,15 @@ class CityProvinceProvider extends AbstractHelper
         $str = preg_replace("/(Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ)/", 'U', $str);
         $str = preg_replace("/(Ỳ|Ý|Ỵ|Ỷ|Ỹ)/", 'Y', $str);
         $str = preg_replace("/(Đ)/", 'D', $str);
-        if (is_numeric($str))
+        if (is_numeric($str)) {
             return (int)$str;
+        }
         return $str;
     }
 
     public function addressConverter(Address $address)
     {
-        $street = implode(", ",$address->getStreet());
+        $street = implode(", ", $address->getStreet());
         $city = $address->getCity();
         $regionName = $address->getRegion()->getRegion();
         if (is_numeric($city)) {
@@ -240,6 +242,6 @@ class CityProvinceProvider extends AbstractHelper
 
     public function getCities()
     {
-    	return $this->cities;
+        return $this->cities;
     }
 }

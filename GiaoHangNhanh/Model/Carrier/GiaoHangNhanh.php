@@ -16,8 +16,6 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Sales\Model\ResourceModel\Order as ResourceOrder;
 
-//use Magenest\ShopByBrand\Model\BrandFactory;
-//use Magenest\ShopByBrand\Model\ResourceModel\Brand;
 /**
  * Class GiaoHangNhanh
  * @package Magenest\GiaoHangNhanh\Model\Carrier
@@ -164,7 +162,8 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
 //		\Magenest\Core\Helper\OrderHelper $orderHelper,
         Session $session,
         array $data = []
-    ) {
+    )
+    {
         $this->httpClientFactory = $httpClientFactory;
         $this->inventoryResource = $inventoryResource;
         $this->sourceFactory = $sourceFactory;
@@ -289,7 +288,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $priceType = $this->_scopeConfig->getValue('carriers/giaohangnhanh/price_type');
         /** get weight */
         $weight = 0;
-        $poundToKg =  0.4535;
+        $poundToKg = 0.4535;
         $checkBrand = false;
         $quoteItem = $this->quoteItemFactory->create();
         $this->itemResourceModel->load($quoteItem, $cartId);
@@ -359,7 +358,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
 
     /**
      * @param string $region
-     * @param string$city
+     * @param string $city
      * @param string $token
      * @return int
      * @throws \Zend_Http_Client_Exception
@@ -388,7 +387,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
                 if ((!$miningText || !$provinceName)) {
                     continue;
                 } else {
-                    if (($provinceName == $cityName || strstr($provinceName, $cityName) != false || strstr($cityName, $provinceName) != false)  &&
+                    if (($provinceName == $cityName || strstr($provinceName, $cityName) != false || strstr($cityName, $provinceName) != false) &&
                         (strstr($miningText, $region) != false)) {
                         $districtId = $district['DistrictID'];
                         break;
@@ -448,6 +447,21 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
             return $service_key;
         }
         return false;
+    }
+
+    public function getTrackingInfo($trackingNumber)
+    {
+        $tracking = $this->_trackStatusFactory->create();
+
+        $url = 'http://www.stamps.com/shipstatus/?confirmation=' . $trackingNumber; // this is the tracking URL of stamps.com, replace this with your's
+
+        $tracking->setData([
+            'carrier' => $this->_code,
+            'carrier_title' => $this->getConfigData('title'),
+            'tracking' => $trackingNumber,
+            'url' => $url,
+        ]);
+        return $tracking;
     }
 
     /**
@@ -524,10 +538,10 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         /** get District */
         $sourceItem = $this->sourceFactory->create();
         $this->inventoryResource->load($sourceItem, 'default', 'source_code');
-        //		$fromDistrictId = $this->getSourceData($sourceItem->getRegion(), $sourceItem->getCity(), $token);
+        //$fromDistrictId = $this->getSourceData($sourceItem->getRegion(), $sourceItem->getCity(), $token);
         //		$toDistrictId = $this->getDistrictId($order->getShippingAddress()->getRegion(), $order->getShippingAddress()->getCity(), $token);
         $fromDistrictId = '1442';
-        $toDistrictId ="1443";
+        $toDistrictId = "1443";
         $serviceArray = $this->getAllAvailableServiceApi($token, (int)$weight, $fromDistrictId, $toDistrictId);
         if (!$serviceArray) {
             return $result->setErrors("Create Giao Hang Nhanh Order Fail: Address is not supported");
@@ -555,87 +569,57 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
             $codAmount -= $this->shipmentFee;
         }
 
-//        $params = [
-//            "token" => $token,
-//            "PaymentTypeID" => 1,
-//            "FromDistrictID" => $fromDistrictId,
-//            "ToDistrictID" => $toDistrictId,
-//            "ExternalCode" => $order->getIncrementId() ?: '',
-//            "Note" => $message . ($order->getCustomerNote() ? ' - ' . $order->getCustomerNote() : ""),
-//            "ClientContactName"=> $sourceItem->getName() ? $sourceItem->getName() : "Elise",
-//            "ClientContactPhone" => $clientTelephone,
-//            "ClientAddress" => $sourceItem->getStreet(),
-//            "to_name" => $order->getCustomerName(),
-//            "ToPhone" => $telephone,
-//            "ToAddress"=> $order->getShippingAddress()->getStreet()[0],
-//            "CoDAmount" => $codAmount,
-//            "RequiredCode"=> $noteCode,
-//            "ServiceID" => (int)($order->getShippingServiceId() ?: $serviceId),
-//            "FromLat" => $sourceItem->getLatitude() ? $sourceItem->getLatitude() : "",
-//            "FromLng" => $sourceItem->getLongitude() ? $sourceItem->getLongitude() : "",
-//            "Content"=> $order->getCustomerNote() ? $order->getCustomerNote() : "",
-//            "Weight" => $weight ? $weight : 1000,
-//            "Length"=> $length ? (int)$length : (int)$config_length,
-//            "Width"=> $width ? (int)$width : (int)$config_width,
-//            "Height"=> $height ? (int)$height : (int)$config_height,
-//            "ReturnContactName"=> $sourceItem->getName(),
-//            "ReturnContactPhone"=> $clientTelephone,
-//            "ReturnAddress"=> $sourceItem->getStreet(),
-//            "ReturnDistrictID"=> $fromDistrictId,
-//            "ExternalReturnCode"=> $sourceItem->getName(),
-//            "PaymentTypeId" => (int)$type
-//        ];
-        $items = $shipment->getItems();
-        $pItems= [];
+        $items = $shipment->getAllItems();
+        $pItems = [];
         foreach ($items as $item) {
             $pItems[] = [
-                "name"=> $item->getName(),
-                "code"=> $item->getSku(),
-                "quantity"=> $item->getData('qty'),
-                "price"=> (int)$item->getPrice(),
-                "length"=> 12,
-                "width"=> 12,
-                "height"=> 12
+                "name" => $item->getName(),
+                "code" => $item->getSku(),
+                "quantity" => (int)$item->getData('qty'),
+                "price" => (int)$item->getPrice(),
+                "length" => 12,
+                "width" => 12,
+                "height" => 12
             ];
         }
         $params = [
-            "payment_type_id"=> (int)$type,
-            "note"=> $message . ($order->getCustomerNote() ? ' - ' . $order->getCustomerNote() : ""),
-            "from_name"=> $sourceItem->getContactName() ? $sourceItem->getName() : "Store",
-            "from_phone"=>$sourceItem->getPhone(),
-            "from_address"=>$sourceItem->getStreet(),
-            "from_ward_name"=>"Phường Ô Chợ Dừa",
-            "from_district_name"=>"Quận Đống Đa",
-            "from_province_name"=>"TP Hà Nội",
-            "required_note"=> $noteCode,
-            "return_name"=> $sourceItem->getContactName() ? $sourceItem->getName() : "Store",
-            "return_phone"=> $sourceItem->getPhone(),
-            "return_address"=> $sourceItem->getStreet(),
-            "return_ward_name"=> "Phường Ô Chợ Dừa",
-            "return_district_name"=> "Quận Đống Đa",
-            "return_province_name"=>"TP Hà Nội",
-            "client_order_code"=> "",
-            "to_name"=> $order->getCustomerName(),
-            "to_phone"=> $telephone,
-            "to_address"=> $order->getShippingAddress()->getStreet()[0],
-            "to_ward_name"=>"Phường Tràng Tiền",
-            "to_district_name"=>"Quận Hoàn Kiếm",
-            "to_province_name"=>"TP Hà Nội",
-            "cod_amount"=> $codAmount,
-            "content"=> $order->getCustomerNote() ? $order->getCustomerNote() : "",
-            "weight"=> 200,
-            "length"=> 1,
-            "width"=> 19,
-            "height"=> 10,
-            "pick_station_id"=> 1444,
-            "deliver_station_id"=> null,
-            "insurance_value"=> (int)$order->getGrandTotal(),
-            "service_id"=> (int)($order->getShippingServiceId() ?: $serviceId),
-            "service_type_id"=>2,
-            "coupon"=>null,
-            "pick_shift"=>null,
-            "pickup_time"=> 1665272576,
-            "items"=>$pItems
+            "payment_type_id" => 2,
+            "note" => $message . ($order->getCustomerNote() ? ' - ' . $order->getCustomerNote() : ""),
+            "from_name" => $sourceItem->getContactName() ? $sourceItem->getName() : "Store",
+            "from_phone" => $sourceItem->getPhone(),
+            "from_address" => $sourceItem->getStreet(),
+            "from_ward_name" => "Phường Ô Chợ Dừa",
+            "from_district_name" => "Quận Đống Đa",
+            "from_province_name" => "TP Hà Nội",
+            "required_note" => $noteCode,
+            "return_name" => $sourceItem->getContactName() ? $sourceItem->getName() : "Store",
+            "return_phone" => $sourceItem->getPhone(),
+            "return_address" => $sourceItem->getStreet(),
+            "return_ward_name" => "Phường Ô Chợ Dừa",
+            "return_district_name" => "Quận Đống Đa",
+            "return_province_name" => "TP Hà Nội",
+            "client_order_code" => "",
+            "to_name" => $order->getCustomerName(),
+            "to_phone" => $telephone,
+            "to_address" => $order->getShippingAddress()->getStreet()[0],
+            "to_ward_name" => "Phường Tràng Tiền",
+            "to_district_name" => "Quận Hoàn Kiếm",
+            "to_province_name" => "TP Hà Nội",
+            "cod_amount" => $codAmount,
+            "content" => $order->getCustomerNote() ? $order->getCustomerNote() : "",
+            "weight" => 200,
+            "length" => 1,
+            "width" => 19,
+            "height" => 10,
+            "pick_station_id" => 1444,
+            "deliver_station_id" => null,
+            "insurance_value" => (int)$order->getGrandTotal(),
+            "service_id" => (int)($order->getShippingServiceId() ?: $serviceId),
+            "service_type_id" => 2,
+            "coupon" => null,
+            "pick_shift" => null,
+            "pickup_time" => 1665272576,
+            "items" => $pItems
         ];
 
         if ($order->getGrandTotal() <= 10000000) {
@@ -644,9 +628,9 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $uri = 'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create';
         $response = json_decode($this->callApi($params, $uri), true);
         if ($response['message'] == 'Success') {
-            $orderCode = $response['data']['client_order_code'];
+            $orderCode = $response['data']['order_code'];
             $order->setData('api_order_id', $orderCode);
-            $order->setData('shipment_type', $type);
+            $order->setData('shipment_type', 2);
             $order->setData('shipment_fee', $this->shipmentFee);
 //            $order->setData('transfer_amount', $codAmount);
             $this->resourceOrder->save($order, 'ReadyToPick');
@@ -666,7 +650,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
     protected function _doShipmentRequest(\Magento\Framework\DataObject $request)
     {
         $result = new \Magento\Framework\DataObject();
-        $poundToKg =  0.4535;
+        $poundToKg = 0.4535;
         $weight = 0;
         $length = 0;
         $width = 0;
@@ -678,7 +662,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
             $packages = $request->getPackages();
             foreach ($packages as $package) {
                 if ($package['params']['weight']) {
-                    $weight += ($package['params']['weight_units'] ==  'POUND') ? ($package['params']['weight'] * $poundToKg)
+                    $weight += ($package['params']['weight_units'] == 'POUND') ? ($package['params']['weight'] * $poundToKg)
                         : $package['params']['weight'] * 1000;
                 }
                 $length = $package['params']['length'];
