@@ -2,9 +2,9 @@
 
 namespace Magenest\TrackingOrder\Block;
 
+use Magento\Catalog\Model\ProductRepository;
 use Magento\Sales\Model\Order\Address;
 use Magento\Sales\Model\Order\Address\Renderer as AddressRenderer;
-use Magento\Catalog\Model\ProductRepository;
 
 class OrderStatus extends \Magento\Framework\View\Element\Template
 {
@@ -120,7 +120,7 @@ class OrderStatus extends \Magento\Framework\View\Element\Template
         $ksResult = "";
         if ($ksOptions = $this->getKsSelectedOptions($ksItem)) {
             foreach ($ksOptions as $ksOption) :
-                $ksResult .= '<b>'.$ksOption['label']."</b>  :  ".$ksOption['value']."<br>";
+                $ksResult .= '<b>' . $ksOption['label'] . "</b>  :  " . $ksOption['value'] . "<br>";
             endforeach;
         }
 
