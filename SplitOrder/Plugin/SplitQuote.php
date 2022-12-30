@@ -72,7 +72,7 @@ class SplitQuote
         // Separate all items in quote into new quotes.
         $quotes = $this->quoteHandler->normalizeQuotes($currentQuote);
         if (empty($quotes)) {
-            return $result = array_values([($proceed($cartId, $payment))]);
+            return array_values([($proceed($cartId, $payment))]);
         }
         // Collect list of data addresses.
         $addresses = $this->quoteHandler->collectAddressesData($currentQuote);

@@ -473,15 +473,6 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      */
     public function callApi($param, $uri)
     {
-//        $client = $this->httpClientFactory->create();
-//        $client->setUri($uri);
-//        $client->setMethod(\Zend_Http_Client::POST);
-//        $client->setHeaders(\Zend_Http_Client::CONTENT_TYPE, 'application/json');
-//        $client->setHeaders('Accept', 'application/json');
-//        $client->setHeaders('token', '181c1778-521d-11ed-b26c-02ed291d830a');
-//        $client->setParameterPost($param);
-//        //$client->setRawData(json_encode($param, true));
-//        return $client->request()->getBody();
         $data_string = json_encode($param);
         $curl = curl_init($uri);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
@@ -602,9 +593,9 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
             "to_name" => $order->getCustomerName(),
             "to_phone" => $telephone,
             "to_address" => $order->getShippingAddress()->getStreet()[0],
-            "to_ward_name" => "Phường Tràng Tiền",
-            "to_district_name" => "Quận Hoàn Kiếm",
-            "to_province_name" => "TP Hà Nội",
+            "to_ward_name" => $order->getShippingAddress()->getData('ward'),
+            "to_district_name" => $order->getShippingAddress()->getData('district'),
+            "to_province_name" => $order->getShippingAddress()->getData('city'),
             "cod_amount" => $codAmount,
             "content" => $order->getCustomerNote() ? $order->getCustomerNote() : "",
             "weight" => 200,
@@ -705,7 +696,21 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
     public function cancelOrder($params)
     {
         $uri = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel";
+//        $params = [
+//            'order_code' => 'LLUWPV'
+//        ];
         $this->callApi($params, $uri);
+//        $response = json_decode($this->callApi($params, $uri), true);
+//        if ($response['message'] == 'Success') {
+//            $qty = $response
+//            $creditmemoItem = $this->itemCreationFactory->create();
+//            $creditmemoItem->setQty($qty)->setOrderItemId($itemId);
+//            $itemIdsToRefund[] = $creditmemoItem;
+//            $this->refundOrder->execute($orderId, $itemIdsToRefund);
+//            $this->messageManager->addSuccessMessage("Create Giao Hang Nhanh Order Success");
+//        } else {
+//            $result->setErrors("Create Giao Hang Nhanh Order Fail: " . $response['message']);
+//        }
     }
 
     public function processAdditionalValidation(\Magento\Framework\DataObject $request)

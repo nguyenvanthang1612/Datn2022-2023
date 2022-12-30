@@ -6,4 +6,7 @@
         <observer name="sales_order_shipment_after"
                   instance="Magenest\GiaoHangNhanh\Observer\SalesOrderShipmentAfter" />
     </event>
+<!--    <event name="sales_order_creditmemo_save_after">-->
+<!--        <observer name="sales_order_creditmemo_cancel" instance="Magenest\GiaoHangNhanh\Observer\CancelGhnObserver"/>-->
+<!--    </event>-->
 </config>

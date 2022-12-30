@@ -15,7 +15,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function isActive($storeId = null)
     {
         return (bool) $this->scopeConfig->isSetFlag(
-            'magenest_split_order/module/enabled',
+            'api_config/module/enabled',
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -30,7 +30,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAttributes($storeId = null)
     {
         return $this->scopeConfig->getValue(
-            'magenest_split_order/options/attributes',
+            'api_config/options/attributes',
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -45,7 +45,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getShippingSplit($storeId = null)
     {
         return (bool) $this->scopeConfig->isSetFlag(
-            'magenest_split_order/options/shipping',
+            'api_config/options/shipping',
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -60,7 +60,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getQtyType($storeId = null)
     {
         return $this->scopeConfig->getValue(
-            'magenest_split_order/options/attribute_qty',
+            'api_config/options/attribute_qty',
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -75,7 +75,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getBackorder($storeId = null)
     {
         return (bool) $this->scopeConfig->isSetFlag(
-            'magenest_split_order/options/qty_backorder',
+            'api_config/options/qty_backorder',
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

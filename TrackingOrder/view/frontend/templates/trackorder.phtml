@@ -30,6 +30,9 @@ if ($block->getModuleStatus() == 0) {
   #check-email-msg {
     color:red;
   }
+  .hide {
+      display: none;
+  }
 </style>
 <div class="bt_trackorder" id="showInfo"></div>
 <div class="luma-form flex" >
@@ -47,15 +50,13 @@ if ($block->getModuleStatus() == 0) {
                   <span id="check-order-msg"></span>
               </div>
           </div>
-          <?php if ($block->checkCustomerLogin() == false): ?>
-          <div class="field email_address">
+          <div class="field email_address <?= $block->checkCustomerLogin(); ?>">
               <div class="control">
                   <label class="luma-form-label" ><?= $block->escapeHtml(__("Email"))?></label>
                   <input class="luma-form-field" name="email_address" id="emailAddress"  type="text" placeholder="Enter Email" autocomplete="off" data-validate="{required:true, 'validate-email':true}">
                   <span id="check-email-msg"></span>
               </div>
           </div>
-          <?php endif; ?>
       </fieldset>
       <div class="actions-toolbar text-center">
             <button class="primary-btn" type="submit" title="Submit" id="submit"><?= $block->escapeHtml(__("Track Order"))?></button>
