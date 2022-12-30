@@ -70,9 +70,6 @@ class Index extends \Magento\Framework\View\Element\Template
     public function checkCustomerLogin()
     {
         if ($this->customerSession->isLoggedIn()) {
-            return 'aaa';
-        }
-        if (!$this->customerSession->isLoggedIn()) {
             return 'hide';
         }
     }
