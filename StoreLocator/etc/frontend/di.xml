@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<!--    <type name="Magento\Checkout\Block\Onepage">-->
+<!--        <arguments>-->
+<!--            <argument name="layoutProcessors" xsi:type="array">-->
+<!--                <item name="store_selected" xsi:type="object">Magenest\StoreLocator\Block\Frontend\Checkout\LayoutProcessor</item>-->
+<!--            </argument>-->
+<!--        </arguments>-->
+<!--    </type>-->
+    <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
+        <plugin name="add_store_field_checkout_form" type="Magenest\StoreLocator\Model\Plugin\Checkout\LayoutProcessor" sortOrder="100"/>
+    </type>
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="save_custom_field" type="Magenest\StoreLocator\Plugin\Checkout\SaveAddressInformation" />
+    </type>
+</config>

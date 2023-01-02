@@ -50,4 +50,19 @@
                     table="magenest_store_locator_store" column="store_id" referenceTable="store"
                     referenceColumn="store_id" onDelete="SET NULL" />
     </table>
+<!--    <table name="quote_address" resource="default" engine="innodb">-->
+<!--        <column xsi:type="varchar" name="store_name" length="250" nullable="true" default="null" comment="Store Name"/>-->
+<!--    </table>-->
+<!--    <table name="sales_order_address" resource="default" engine="innodb">-->
+<!--        <column xsi:type="varchar" name="store_name" length="250" nullable="true" default="null" comment="Store Name"/>-->
+<!--    </table>-->
+    <table name="quote" resource="default" engine="innodb">
+        <column xsi:type="varchar" name="store_name_list" length="250" nullable="true" default="null" comment="Store Name"/>
+    </table>
+    <table name="sales_order" resource="default" engine="innodb">
+        <column xsi:type="varchar" name="store_name_list" length="250" nullable="true" default="null" comment="Store Name"/>
+    </table>
+    <table name="sales_order_grid" resource="default" engine="innodb">
+        <column xsi:type="varchar" name="store_name_list" length="250" nullable="true" default="null" comment="Store Name"/>
+    </table>
 </schema>

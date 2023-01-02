@@ -2,17 +2,17 @@
 
 namespace Magenest\StoreLocator\Model\ResourceModel\Store;
 
-use Magento\Store\Model\StoreManagerInterface;
-
-class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection {
-
-    public function _construct() {
+class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
+{
+    public function _construct()
+    {
         $this->_init('Magenest\StoreLocator\Model\Store', 'Magenest\StoreLocator\Model\ResourceModel\Store');
         $this->_map['fields']['store']   = 'store_table.store_id';
     }
 
-    public function addDistanceFilter($data = []) {
-        $this->getSelect()->where('3959 * acos(cos( radians('.$data['lat_search'].')) * cos( radians( lat ) ) * cos( radians( lng ) - radians('.$data['long_search'].')) + sin( radians('.$data['lat_search'].') ) * sin( radians( lat ) ) ) < '.$data['radius']);
+    public function addDistanceFilter($data = [])
+    {
+        $this->getSelect()->where('3959 * acos(cos( radians(' . $data['lat_search'] . ')) * cos( radians( lat ) ) * cos( radians( lng ) - radians(' . $data['long_search'] . ')) + sin( radians(' . $data['lat_search'] . ') ) * sin( radians( lat ) ) ) < ' . $data['radius']);
         return $this;
     }
 
@@ -45,5 +45,4 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
         }
         return parent::_renderFiltersBefore();
     }
-
 }

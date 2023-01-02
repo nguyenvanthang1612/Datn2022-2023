@@ -6,8 +6,8 @@
 
 namespace Magenest\Directory\Block\Checkout;
 
-use Magento\Checkout\Block\Checkout\LayoutProcessorInterface;
 use Magenest\Directory\Helper\Data;
+use Magento\Checkout\Block\Checkout\LayoutProcessorInterface;
 
 /**
  * Class LayoutProcessor
@@ -27,8 +27,7 @@ class LayoutProcessor implements LayoutProcessorInterface
      */
     public function __construct(
         Data $dataHelper
-    )
-    {
+    ) {
         $this->_dataHelper = $dataHelper;
     }
 

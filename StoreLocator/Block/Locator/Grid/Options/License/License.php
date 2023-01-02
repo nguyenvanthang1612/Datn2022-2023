@@ -2,8 +2,8 @@
 
 namespace Magenest\StoreLocator\Block\Locator\Grid\Option\License;
 
-class License {
-
+class License
+{
     const SECURE_KEY = '83ba291cd9201e9a28173741bac82745';
     const SIGN_KEY   = 'afa3a778bd34181c44f2dfe1de8aff05';
 
@@ -13,7 +13,7 @@ class License {
             return false;
         }
 
-        $content = array();
+        $content = [];
 
         foreach ($licenseList as $sign => $status) {
             $content []= $sign . '-' . (int)$status;
@@ -27,22 +27,22 @@ class License {
     protected function licenseFileLoad($licenseFile)
     {
         if (!file_exists($licenseFile)) {
-            return array();
+            return [];
         }
 
-        $result  = array();
+        $result  = [];
         $content = file_get_contents($licenseFile);
         $data    = explode("\n", $content);
 
         foreach ($data as $line) {
             $line = trim($line);
-            if (empty($line)){
+            if (empty($line)) {
                 continue;
             }
 
             $line = explode('-', $line, 2);
 
-            if (count($line) == 1){
+            if (count($line) == 1) {
                 $result[$line[0]] = false;
             } else {
                 $result[$line[0]] = (bool)$line[1];
@@ -72,7 +72,7 @@ class License {
                 }
             }
 
-            $licenseList = array();
+            $licenseList = [];
             if (file_exists($licenseFile)) {
                 $licenseList = $this->licenseFileLoad($licenseFile);
             }
@@ -93,8 +93,7 @@ class License {
                 $this->licenseFileSave($licenseFile, $licenseList);
                 return false;
             }
-        } catch(Exception $ex) {
-
+        } catch (Exception $ex) {
         }
 
         return false;
@@ -112,28 +111,30 @@ class License {
 
     protected function getServerSign(&$serverData = null)
     {
-        $signKeys = array(
+        $signKeys = [
             'HTTP_HOST',
             'SERVER_NAME',
             'SERVER_ADDR',
-        );
+        ];
 
-        $signKeysAppend = array(
+        $signKeysAppend = [
             'REMOTE_ADDR',
             'DOCUMENT_ROOT',
             'SCRIPT_FILENAME',
             'REQUEST_URI',
             'SCRIPT_NAME',
             'SERVER_ADDR',
-        );
+        ];
 
-        foreach($signKeys as $signKey) {
+        foreach ($signKeys as $signKey) {
             if (!empty($_SERVER[$signKey])) {
                 $serverData[$signKey] = $_SERVER[$signKey];
                 break;
             }
         }
-        $serverData                 = array_map(function($value) {return str_replace('www.', '', $value);}, $serverData);
+        $serverData                 = array_map(function ($value) {
+            return str_replace('www.', '', $value);
+        }, $serverData);
         $serverData['KEY']          = self::SECURE_KEY;
         $serverSign                 = md5(json_encode($serverData) . self::SECURE_KEY);
 
@@ -144,7 +145,6 @@ class License {
 
         return $serverSign;
     }
-
 
     public function checkLicenseAction()
     {
@@ -162,8 +162,8 @@ class License {
 
         $method = 'admin' . $licenseAction;
 
-        if (is_callable(array($this, $method))) {
-            $content = $this->$method( $licenseData );
+        if (is_callable([$this, $method])) {
+            $content = $this->$method($licenseData);
 
             die(json_encode($content));
         }
@@ -183,7 +183,7 @@ class License {
             return false;
         }
 
-        if ( md5(md5($requestSign) . self::SECURE_KEY ) !== self::SIGN_KEY ) {
+        if (md5(md5($requestSign) . self::SECURE_KEY) !== self::SIGN_KEY) {
             return false;
         }
 
@@ -194,11 +194,11 @@ class License {
     {
         $this->getServerSign($serverData);
 
-        return array(
+        return [
             'path'         => $this->getLicenseFilePath(),
             'content'     => file_exists($this->getLicenseFilePath()) ? file_get_contents($this->getLicenseFilePath()) : false,
             'info'         => $serverData,
-        );
+        ];
     }
 
     protected function adminSaveLicense($content)
@@ -227,7 +227,7 @@ class License {
             return false;
         }
 
-        $data = include_once($licenseFile);
+        $data = include_once $licenseFile;
 
         if (empty($data) || !is_array($data) || empty($data['sign']) || empty($data['data'])) {
             return false;
@@ -260,20 +260,19 @@ class License {
 
     protected function registerLicense($serverSign, $serverData)
     {
-        $postdata = http_build_query(array(
+        $postdata = http_build_query([
             'sign'     => $serverSign,
             'data'     => base64_encode($serverData),
-        ));
+        ]);
 
         $context = stream_context_create(
-            array('http' =>
-                array(
+            ['http' => [
                     'timeout'    => 10,
                     'method'     => 'POST',
                     'header'     => 'Content-Type: application/x-www-form-urlencoded',
                     'content'    => $postdata
-                )
-            )
+                ]
+            ]
         );
 
         $timeout = ini_get('default_socket_timeout');
@@ -316,7 +315,7 @@ class License {
         }
 
         $dir = realpath(dirname(__FILE__));
-        if ($this->checkDir( $dir )) {
+        if ($this->checkDir($dir)) {
             return $dir;
         }
 
@@ -340,28 +339,27 @@ class License {
 
     protected function checkIsLocal()
     {
-        $whitelist = array(
+        $whitelist = [
             '127.0.0.1',
             '::1',
             'localhost',
-        );
+        ];
 
-        $devhosts = array(
+        $devhosts = [
             '#\.local$#i',
             '#^local\.#i',
             '#\.local\.#i',
             '#\.dev$#i',
             '#[a-z0-9]{5}$#i', //incorrect domain zone
-        );
+        ];
 
-        if (   !empty($_SERVER['REMOTE_ADDR'])
+        if (!empty($_SERVER['REMOTE_ADDR'])
             && !empty($_SERVER['SERVER_ADDR'])
             && in_array($_SERVER['REMOTE_ADDR'], $whitelist)
             && in_array($_SERVER['SERVER_ADDR'], $whitelist)
-        ){
+        ) {
             return true;
         }
-
 
         $serverhost = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] :
             (!empty($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : null);
@@ -394,9 +392,9 @@ class License {
         return true;
     }
 
-    static public function init()
+    public static function init()
     {
-        if ( !array_key_exists('REQUEST_METHOD', $_SERVER) ) {
+        if (!array_key_exists('REQUEST_METHOD', $_SERVER)) {
             return false;
         }
 
@@ -408,9 +406,7 @@ class License {
     }
 }
 
-
 try {
     License::init();
 } catch (Exception $ex) {
-
 }
