@@ -11,6 +11,6 @@ class AddOrderCommentsToOrder implements \Magento\Framework\Event\ObserverInterf
         $order = $observer->getEvent()->getOrder();
         $quote = $observer->getEvent()->getQuote();
 
-        $order->setData('store_locator_name', $quote->getOrderComments());
+        $order->setData('order_comments', $quote->getOrderComments());
     }
 }

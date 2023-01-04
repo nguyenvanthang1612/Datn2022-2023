@@ -2,9 +2,9 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="quote" resource="default">
-        <column xsi:type="varchar" name="store_locator_name" nullable="true" comment="store_locator_name"/>
+        <column xsi:type="varchar" name="order_comments" nullable="true" comment="Order Comments"/>
     </table>
     <table name="sales_order" resource="default">
-        <column xsi:type="varchar" name="store_locator_name" nullable="true" comment="store_locator_name"/>
+        <column xsi:type="varchar" name="order_comments" nullable="true" comment="Order Comments"/>
     </table>
 </schema>

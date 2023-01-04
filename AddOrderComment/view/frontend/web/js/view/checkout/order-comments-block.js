@@ -13,7 +13,7 @@ define(
                 isEnabled: window.checkoutConfig.enabled_comments,
                 initialize: function () {
                     var self = this;
-                     $(document).on("click", ".input-text.store_locator_name", function () {
+                     $(document).on("click", ".input-text.order_comments", function () {
                         var activePay = $(".payment-method._active").find("input.radio").val();
                             $(this).attr('id',activePay);
                         });
