@@ -1,0 +1,19 @@
+<?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
+<?php $_order = $block->getOrder() ?>
+<div class="block block-order-details-view">
+    <?php
+    if (!empty($block->getOrder()->getOrderComments())) {
+        ?>
+        <div class="block-title">
+            <strong><?= /* @noEscape */ __('Order Comments') ?></strong>
+        </div>
+        <div class="box box-order-comments-method">
+            <div class="box-content order-comments-box">
+                <?= /* @noEscape */ $block->escapeHtml(nl2br($block->getOrder()->getOrderComments())); ?>
+            </div>
+        </div>
+        <?php
+    }
+    ?>
+</div>
+
