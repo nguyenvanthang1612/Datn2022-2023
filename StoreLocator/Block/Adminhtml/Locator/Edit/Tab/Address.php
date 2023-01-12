@@ -1,8 +1,8 @@
 <?php
 namespace Magenest\StoreLocator\Block\Adminhtml\Locator\Edit\Tab;
 
-class Address extends \Magento\Backend\Block\Widget\Form\Generic {
-
+class Address extends \Magento\Backend\Block\Widget\Form\Generic
+{
     protected $_storeFactory;
     protected $_countryFactory;
 
@@ -15,11 +15,11 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
      * @param array $data
      */
     public function __construct(
-    \Magento\Backend\Block\Template\Context $context,
-            \Magento\Framework\Registry $registry,
-            \Magento\Framework\Data\FormFactory $formFactory,
-            \Magento\Directory\Model\Config\Source\Country $countryFactory,
-            array $data = []
+        \Magento\Backend\Block\Template\Context $context,
+        \Magento\Framework\Registry $registry,
+        \Magento\Framework\Data\FormFactory $formFactory,
+        \Magento\Directory\Model\Config\Source\Country $countryFactory,
+        array $data = []
     ) {
         $this->_countryFactory = $countryFactory;
         parent::__construct($context, $registry, $formFactory, $data);
@@ -31,8 +31,8 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return \Magento\Backend\Block\Widget\Form
      */
-    protected function _prepareForm() {
-
+    protected function _prepareForm()
+    {
         $model = $this->_coreRegistry->registry('locator');
 
         /** @var \Magento\Framework\Data\Form $form */
@@ -42,7 +42,9 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
         $addressFieldset = $form->addFieldset('address_fieldset', ['legend' => __('Store Address')]);
 
         $addressFieldset->addField(
-                'street_address', 'text', [
+            'street_address',
+            'text',
+            [
             'name' => 'street_address',
             'label' => __('Street Address'),
             'id' => 'street_address',
@@ -52,7 +54,9 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
         );
         $countryArray = $this->_countryFactory->toOptionArray();
         $addressFieldset->addField(
-                'country', 'select', [
+            'country',
+            'select',
+            [
             'name' => 'country',
             'label' => __('Country'),
             'id' => 'country',
@@ -62,7 +66,9 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
                 ]
         );
         $addressFieldset->addField(
-                'state', 'text', [
+            'state',
+            'text',
+            [
             'name' => 'state',
             'label' => __('State'),
             'id' => 'state',
@@ -71,7 +77,9 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
                 ]
         );
         $addressFieldset->addField(
-                'city', 'text', [
+            'city',
+            'text',
+            [
             'name' => 'city',
             'label' => __('City'),
             'id' => 'city',
@@ -80,7 +88,9 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
                 ]
         );
         $addressFieldset->addField(
-                'zipcode', 'text', [
+            'zipcode',
+            'text',
+            [
             'name' => 'zipcode',
             'label' => __('Zipcode'),
             'id' => 'zipcode',
@@ -88,18 +98,19 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
             'required' => true
                 ]
         );
-        $addressFieldset->addField('btn_getmap_address', 'note',
-            [
-                'label'     => '',
-                'after_element_html' => '<button id="getmap_address" type="button"><span><span><span>'.__('Get Map').'</span></span></span></button>',
-            ]
-        );
-
+//        $addressFieldset->addField('btn_getmap_address', 'note',
+//            [
+//                'label'     => '',
+//                'after_element_html' => '<button id="getmap_address" type="button"><span><span><span>'.__('Get Map').'</span></span></span></button>',
+//            ]
+//        );
 
         $locationFieldset = $form->addFieldset('location_fieldset', ['legend' => __('Store Location')]);
 
         $locationFieldset->addField(
-                'lat', 'text', [
+            'lat',
+            'text',
+            [
             'name' => 'lat',
             'label' => __('Latitude'),
             'id' => 'lat',
@@ -108,7 +119,9 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
                 ]
         );
         $locationFieldset->addField(
-                'lng', 'text', [
+            'lng',
+            'text',
+            [
             'name' => 'lng',
             'label' => __('Longitude'),
             'id' => 'lng',
@@ -116,14 +129,16 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
             'required' => true
                 ]
         );
-        $locationFieldset->addField('btn_getmap_location', 'note',
+        $locationFieldset->addField(
+            'btn_getmap_location',
+            'note',
             [
                 'label'     => '',
-                'after_element_html' => '<button id="getmap_location" type="button"><span><span><span>'.__('Get Map').'</span></span></span></button>',
+                'after_element_html' => '<button id="getmap_location" type="button"><span><span><span>' . __('Get Map') . '</span></span></span></button>',
             ]
         );
 
-        $mapFieldset = $form->addFieldset('form_map', array('legend'=>''));
+        $mapFieldset = $form->addFieldset('form_map', ['legend'=>'']);
         $data = $model->getData();
         $form->setValues($data);
 
@@ -131,5 +146,4 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic {
 
         return parent::_prepareForm();
     }
-
 }
