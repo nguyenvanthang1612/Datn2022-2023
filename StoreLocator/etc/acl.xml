@@ -4,8 +4,21 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Magento_Backend::magenest" title="Store Locator" sortOrder="10">
-                    <resource id="Magenest_StoreLocator::locator_manage" title="Manage Stores" sortOrder="40"/>
+                <resource id="Magento_Backend::Magenest" title="Magenest" translate="title">
+<!--                    <resource id="Magenest_StoreLocator::storelocator" title="Store Locator" sortOrder="60">-->
+                    <resource id="Magenest_StoreLocator::menu" title="Store Locator Menu" translate="title" sortOrder="70">
+                        <resource id="Magenest_StoreLocator::storelocator" title="Store Locator" sortOrder="60"/>
+                            <resource id="Magenest_StoreLocator::locator_manage" title="Manage Stores" sortOrder="40"/>
+                            <resource id="Magenest_StoreLocator::settings" title="Setting" sortOrder="50"/>
+<!--                        </resource>-->
+                    </resource>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Magenest_StoreLocator::manage" title="Store Locator Configuration" sortOrder="90"/>
+                        </resource>
+                    </resource>
                 </resource>
             </resource>
         </resources>
