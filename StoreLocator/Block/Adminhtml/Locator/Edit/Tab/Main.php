@@ -7,8 +7,8 @@ namespace Magenest\StoreLocator\Block\Adminhtml\Locator\Edit\Tab;
  *
  * @SuppressWarnings(PHPMD.DepthOfInheritance)
  */
-class Main extends \Magento\Backend\Block\Widget\Form\Generic {
-
+class Main extends \Magento\Backend\Block\Widget\Form\Generic
+{
     protected $_storeFactory;
     protected $_wysiwygConfig;
     protected $_systemStore;
@@ -22,12 +22,12 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
      * @param array $data
      */
     public function __construct(
-    \Magento\Backend\Block\Template\Context $context,
-            \Magento\Framework\Registry $registry,
-            \Magento\Framework\Data\FormFactory $formFactory,
-            \Magento\Cms\Model\Wysiwyg\Config $wysiwygConfig,
-            \Magento\Store\Model\System\Store $systemStore,
-            array $data = []
+        \Magento\Backend\Block\Template\Context $context,
+        \Magento\Framework\Registry $registry,
+        \Magento\Framework\Data\FormFactory $formFactory,
+        \Magento\Cms\Model\Wysiwyg\Config $wysiwygConfig,
+        \Magento\Store\Model\System\Store $systemStore,
+        array $data = []
     ) {
         $this->_wysiwygConfig = $wysiwygConfig;
         $this->_systemStore = $systemStore;
@@ -40,8 +40,8 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return \Magento\Backend\Block\Widget\Form
      */
-    protected function _prepareForm() {
-
+    protected function _prepareForm()
+    {
         $model = $this->_coreRegistry->registry('locator');
 
         /** @var \Magento\Framework\Data\Form $form */
@@ -54,7 +54,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
         }
 
         $baseFieldset->addField(
-                'name', 'text', [
+            'name',
+            'text',
+            [
             'name' => 'name',
             'label' => __('Store Name'),
             'id' => 'name',
@@ -63,7 +65,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
                 ]
         );
         $baseFieldset->addField(
-                'image', 'image', [
+            'image',
+            'image',
+            [
             'name' => 'image',
             'label' => __('Store Logo'),
             'id' => 'image',
@@ -74,7 +78,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
         );
 
         $baseFieldset->addField(
-                'email', 'text', [
+            'email',
+            'text',
+            [
             'name' => 'email',
             'label' => __('Email'),
             'id' => 'email',
@@ -84,7 +90,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
         );
 
         $baseFieldset->addField(
-                'phone_number', 'text', [
+            'phone_number',
+            'text',
+            [
             'name' => 'phone_number',
             'label' => __('Phone Number'),
             'id' => 'phone_number',
@@ -94,7 +102,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
         );
 
         $baseFieldset->addField(
-                'fax', 'text', [
+            'fax',
+            'text',
+            [
             'name' => 'fax',
             'label' => __('Fax'),
             'id' => 'fax',
@@ -104,7 +114,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
         );
 
         $baseFieldset->addField(
-                'website', 'text', [
+            'website',
+            'text',
+            [
             'name' => 'website',
             'label' => __('Website Url'),
             'id' => 'website',
@@ -113,7 +125,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
                 ]
         );
         $baseFieldset->addField(
-                'status', 'select', [
+            'status',
+            'select',
+            [
             'label' => __('Status'),
             'title' => __('Store Status'),
             'name' => 'status',
@@ -184,5 +198,4 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic {
 
         return parent::_prepareForm();
     }
-
 }

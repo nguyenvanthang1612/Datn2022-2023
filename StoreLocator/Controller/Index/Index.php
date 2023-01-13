@@ -5,20 +5,21 @@ namespace Magenest\StoreLocator\Controller\Index;
 use Magenest\StoreLocator\Model\StoreFactory;
 use Magento\Framework\App\Action\Context;
 
-class Index extends \Magento\Framework\App\Action\Action {
-
+class Index extends \Magento\Framework\App\Action\Action
+{
     protected $_storeFactory;
 
-    public function __construct(Context $context, StoreFactory $storeFactory) {
+    public function __construct(Context $context, StoreFactory $storeFactory)
+    {
         parent::__construct($context);
         $this->_storeFactory = $storeFactory;
     }
 
-    public function execute() {
+    public function execute()
+    {
         $this->_view->loadLayout();
         $this->_view->getLayout()->initMessages();
         $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Store Locator'));
         $this->_view->renderLayout();
     }
-
 }

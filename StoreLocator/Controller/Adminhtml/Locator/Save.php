@@ -6,20 +6,23 @@ use Magenest\StoreLocator\Model\StoreFactory;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
-class Save extends \Magento\Backend\App\Action {
-
+class Save extends \Magento\Backend\App\Action
+{
     protected $_storeFactory;
     protected $_coreRegistry;
     protected $_storeManager;
     protected $_filesystem;
     protected $_fileUploaderFactory;
 
-    public function __construct(Context $context,
-            StoreFactory $storeFactory,
-            \Magento\Framework\Registry $coreRegistry,
-            \Magento\Store\Model\StoreManagerInterface $storeManager,
-            \Magento\Framework\Filesystem $filesystem,
-            \Magento\MediaStorage\Model\File\UploaderFactory $fileUploaderFactory) {
+    public function __construct(
+        Context $context,
+        StoreFactory $storeFactory,
+        \Magento\Framework\Registry $coreRegistry,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Framework\Filesystem $filesystem,
+        \Magento\MediaStorage\Model\File\UploaderFactory $fileUploaderFactory
+    )
+    {
         parent::__construct($context);
         $this->_storeFactory = $storeFactory;
         $this->_coreRegistry = $coreRegistry;
@@ -33,7 +36,8 @@ class Save extends \Magento\Backend\App\Action {
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function execute() {
+    public function execute()
+    {
         $data = $this->getRequest()->getPostValue();
         if (!$data) {
             $this->_redirect('locator/*/');
@@ -51,7 +55,7 @@ class Save extends \Magento\Backend\App\Action {
         }
 
         // Store logo Image upload
-        if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
+        if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
             /** @var $uploader \Magento\MediaStorage\Model\File\Uploader */
             $uploader = $this->_fileUploaderFactory->create(['fileId' => 'image']);
             $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
@@ -59,21 +63,21 @@ class Save extends \Magento\Backend\App\Action {
             $uploader->setAllowCreateFolders(true);
             $uploader->setFilesDispersion(true);
             $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            if($uploader->checkAllowedExtension($ext)) {
+            if ($uploader->checkAllowedExtension($ext)) {
                 $path = $this->_filesystem->getDirectoryRead(DirectoryList::MEDIA)
                         ->getAbsolutePath('magenest_storelocator/');
                 $uploader->save($path);
 
                 $fileName = $uploader->getUploadedFileName();
                 if ($fileName) {
-                    $data['image'] = 'magenest_storelocator'.$fileName;
+                    $data['image'] = 'magenest_storelocator' . $fileName;
                 }
             } else {
                 $this->messageManager->addError(__('Disallowed file type.'));
                 return $this->redirectToEdit($model, $data);
             }
         } else {
-            if(isset($data['image']['delete']) && $data['image']['delete'] == 1) {
+            if (isset($data['image']['delete']) && $data['image']['delete'] == 1) {
                 $data['image'] = '';
             } else {
                 unset($data['image']);
@@ -87,7 +91,7 @@ class Save extends \Magento\Backend\App\Action {
             $this->messageManager->addSuccess(__('You saved the store locator.'));
             $this->_getSession()->setLocator(false);
             $back = $this->getRequest()->getParam('back', false);
-            if($back == 'edit') {
+            if ($back == 'edit') {
                 return $this->_redirect('locator/*/edit', ['id' => $model->getId(), '_current' => true, 'active_tab' => '']);
             }
             $this->_redirect('locator/*/');
@@ -103,11 +107,11 @@ class Save extends \Magento\Backend\App\Action {
      * @param array $data
      * @return void
      */
-    protected function redirectToEdit($model, array $data) {
+    protected function redirectToEdit($model, array $data)
+    {
         $this->_getSession()->setLocator($data);
         $arguments = $model->getId() ? ['id' => $model->getId()] : [];
         $arguments = array_merge($arguments, ['_current' => true, 'active_tab' => '']);
         $this->_redirect('locator/*/edit', $arguments);
     }
-
 }

@@ -2,9 +2,10 @@
 
 namespace Magenest\StoreLocator\Controller\Adminhtml\Locator;
 
-class MassStatus extends \Magento\Backend\App\Action {
-
-    public function execute() {
+class MassStatus extends \Magento\Backend\App\Action
+{
+    public function execute()
+    {
         $locatorIds = $this->getRequest()->getParam('locator');
         if (!is_array($locatorIds)) {
             $this->messageManager->addError(__('Please select one or more store locator.'));
@@ -22,5 +23,4 @@ class MassStatus extends \Magento\Backend\App\Action {
 
         $this->_redirect('*/*/index');
     }
-
 }

@@ -5,20 +5,22 @@ namespace Magenest\StoreLocator\Controller\Index;
 use Magenest\StoreLocator\Model\StoreFactory;
 use Magento\Framework\App\Action\Context;
 
-class View extends \Magento\Framework\App\Action\Action {
-
+class View extends \Magento\Framework\App\Action\Action
+{
     protected $_storeFactory;
     protected $_coreRegistry;
 
-    public function __construct(Context $context, StoreFactory $storeFactory, \Magento\Framework\Registry $coreRegistry) {
+    public function __construct(Context $context, StoreFactory $storeFactory, \Magento\Framework\Registry $coreRegistry)
+    {
         parent::__construct($context);
         $this->_storeFactory = $storeFactory;
         $this->_coreRegistry = $coreRegistry;
     }
 
-    public function execute() {
+    public function execute()
+    {
         $id = $this->getRequest()->getParam('id', false);
-        if(!$id) {
+        if (!$id) {
             return $this->_forward('noRoute');
         }
         $model = $this->_storeFactory->create()->load($id);
@@ -28,5 +30,4 @@ class View extends \Magento\Framework\App\Action\Action {
         $this->_view->getPage()->getConfig()->getTitle()->prepend($model->getName());
         $this->_view->renderLayout();
     }
-
 }

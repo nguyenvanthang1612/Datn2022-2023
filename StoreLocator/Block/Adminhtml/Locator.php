@@ -2,8 +2,6 @@
 
 namespace Magenest\StoreLocator\Block\Adminhtml;
 
-use Magenest\StoreLocator\Model\ResourceModel\Store\Collection;
-
 class Locator extends \Magento\Backend\Block\Template
 {
 
@@ -20,9 +18,10 @@ class Locator extends \Magento\Backend\Block\Template
      * @param array $data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context, \Magenest\StoreLocator\Model\ResourceModel\Store\CollectionFactory $collectionFactory, array $data = []
-    )
-    {
+        \Magento\Backend\Block\Template\Context $context,
+        \Magenest\StoreLocator\Model\ResourceModel\Store\CollectionFactory $collectionFactory,
+        array $data = []
+    ) {
         $this->_collectionFactory = $collectionFactory;
         parent::__construct($context, $data);
     }
@@ -61,5 +60,4 @@ class Locator extends \Magento\Backend\Block\Template
     {
         return parent::_beforeToHtml();
     }
-
 }
