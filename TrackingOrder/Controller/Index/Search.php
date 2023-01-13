@@ -85,13 +85,13 @@ class Search extends \Magento\Framework\App\Action\Action
     {
         $id = $this->getRequest()->getPost('order_id');
         $ksData = $this->getOrderId($id);
-        if ($this->customerSession->isLoggedIn() && $this->getAccountOrderId($id)) {
-            $ksOrderId = $this->getAccountOrderId($id);
-        } else {
-            $this->ksMessageManager->addErrorMessage(__('Please check your order id'));
-            $ksResultRedirect = $this->resultRedirectFactory->create();
-            return $ksResultRedirect->setPath('trackingorder/index/index');
-        }
+//        if ($this->customerSession->isLoggedIn() && $this->getAccountOrderId($id)) {
+//            $ksOrderId = $this->getAccountOrderId($id);
+//        } else {
+//            $this->ksMessageManager->addErrorMessage(__('Please check your order id'));
+//            $ksResultRedirect = $this->resultRedirectFactory->create();
+//            return $ksResultRedirect->setPath('trackingorder/index/index');
+//        }
         if ($ksData) {
             $ksOrderId = $this->getOrderId($id);
         } else {
