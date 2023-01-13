@@ -28,6 +28,6 @@ abstract class Locator extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Magenest_StoreLocator::locator');
+        return $this->_authorization->isAllowed('Magenest_StoreLocator::locator_manage');
     }
 }
