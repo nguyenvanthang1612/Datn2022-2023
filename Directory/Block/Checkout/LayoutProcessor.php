@@ -132,11 +132,16 @@ class LayoutProcessor implements LayoutProcessorInterface
                         'telephone' => [
                             'validation' => [
                                 'required-entry' => true,
-                                'mobileVN' => true
+                                'mobileVN' => true,
+                                'min_text_length' => 10,
+                                'max_text_length' => 12,
+                                'validate-number' => 0
                             ],
                         ],
                         'postcode' => [
-                            'visible' => false
+                            'visible' => false,
+                            'min_text_length' => 5,
+                            'max_text_length' => 10,
                         ],
                         'region_id' => [
                             'visible' => false

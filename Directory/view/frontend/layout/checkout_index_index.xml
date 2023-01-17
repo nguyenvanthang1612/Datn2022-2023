@@ -120,8 +120,27 @@
                                                                     <item name="validation" xsi:type="array">
                                                                         <item name="required-entry" xsi:type="boolean">true</item>
                                                                         <item name="mobileVN" xsi:type="boolean">true</item>
+                                                                        <item name="min_text_length" xsi:type="number">10</item>
+                                                                        <item name="max_text_length" xsi:type="number">12</item>
+                                                                        <item name="validate-number" xsi:type="number">0</item>
                                                                     </item>
                                                                 </item>
+                                                                <item name="postcode" xsi:type="array">
+                                                                    <!-- post-code field has custom UI component -->
+                                                                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/post-code</item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="required-entry" xsi:type="boolean">true</item>
+                                                                        <item name="min_text_length" xsi:type="number">5</item>
+                                                                        <item name="max_text_length" xsi:type="number">10</item>
+                                                                    </item>
+                                                                </item>
+<!--                                                                <item name="postcode" xsi:type="array">-->
+<!--                                                                    <item name="visible" xsi:type="boolean">false</item>-->
+<!--                                                                    <item name="validation" xsi:type="array">-->
+<!--                                                                        <item name="min_text_length" xsi:type="number">5</item>-->
+<!--                                                                        <item name="max_text_length" xsi:type="number">10</item>-->
+<!--                                                                    </item>-->
+<!--                                                                </item>-->
                                                             </item>
                                                         </item>
                                                     </item>
