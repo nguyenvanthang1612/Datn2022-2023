@@ -61,7 +61,8 @@ class Form extends Generic
                 'name'     => 'country_id',
                 'label'    => __('Country'),
                 'title'    => __('Country'),
-                'values'   => $this->countrySource->toOptionArray(),
+//                'values'   => $this->countrySource->toOptionArray(),
+                'values'   => $this->toOptionArray(),
                 'disabled' => $disabled,
                 'required' => true
             ]
@@ -94,7 +95,8 @@ class Form extends Generic
                 'title'    => __('Code'),
                 'label'    => __('Code'),
                 'required' => true,
-                'disabled' => $disabled
+                'disabled' => $disabled,
+                'class' => 'validate-not-negative-number'
             ]
         );
         $dashboard->addField(
@@ -121,5 +123,13 @@ class Form extends Generic
     public function retrieveModel()
     {
         return $this->_coreRegistry->registry('current_city');
+    }
+
+    public function toOptionArray() {
+        $option = [
+            ['value' => 'VN', 'label' => 'Việt Nam']
+
+        ];
+        return $option;
     }
 }

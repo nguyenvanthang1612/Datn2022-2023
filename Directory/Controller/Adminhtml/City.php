@@ -6,13 +6,13 @@
 namespace Magenest\Directory\Controller\Adminhtml;
 
 use Magenest\Directory\Helper\Data;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\Cache\TypeListInterface;
-use Magento\Framework\View\Result\PageFactory;
+use Magenest\Directory\Model\City as CityModel;
 use Magenest\Directory\Model\CityFactory;
 use Magento\Backend\App\Action;
-use Magenest\Directory\Model\City as CityModel;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Cache\Type\Config;
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class City
@@ -60,7 +60,6 @@ abstract class City extends Action
         Config $configCacheType,
         TypeListInterface $cacheTypeList
     ) {
-
         $this->_resultPageFactory = $resultPageFactory;
         $this->_cityFactory = $cityFactory;
         $this->configCacheType = $configCacheType;
@@ -116,8 +115,9 @@ abstract class City extends Action
         return $this->_cityFactory->create()->getCollection();
     }
 
-    protected function reInitObject(){
-        $this->configCacheType->clean(\Zend_Cache::CLEANING_MODE_MATCHING_TAG,[Data::CACHE_TAG_CITY, Data::CACHE_TAG_DATA]);
+    protected function reInitObject()
+    {
+        $this->configCacheType->clean(\Zend_Cache::CLEANING_MODE_MATCHING_TAG, [Data::CACHE_TAG_CITY, Data::CACHE_TAG_DATA]);
         $this->cacheTypeList->invalidate('config');
     }
 }

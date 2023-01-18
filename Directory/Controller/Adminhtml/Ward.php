@@ -6,13 +6,13 @@
 namespace Magenest\Directory\Controller\Adminhtml;
 
 use Magenest\Directory\Helper\Data;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\Cache\TypeListInterface;
-use Magento\Framework\View\Result\PageFactory;
+use Magenest\Directory\Model\District as WardModel;
 use Magenest\Directory\Model\WardFactory;
 use Magento\Backend\App\Action;
-use Magenest\Directory\Model\District as WardModel;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Cache\Type\Config;
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Ward
@@ -59,7 +59,6 @@ abstract class Ward extends Action
         Config $configCacheType,
         TypeListInterface $cacheTypeList
     ) {
-
         $this->_resultPageFactory = $resultPageFactory;
         $this->_wardFactory = $wardFactory;
         $this->configCacheType = $configCacheType;
@@ -115,8 +114,9 @@ abstract class Ward extends Action
         return $this->_wardFactory->create()->getCollection();
     }
 
-    protected function reInitObject(){
-        $this->configCacheType->clean(\Zend_Cache::CLEANING_MODE_MATCHING_TAG,[Data::CACHE_TAG_WARD, Data::CACHE_TAG_DATA]);
+    protected function reInitObject()
+    {
+        $this->configCacheType->clean(\Zend_Cache::CLEANING_MODE_MATCHING_TAG, [Data::CACHE_TAG_WARD, Data::CACHE_TAG_DATA]);
         $this->cacheTypeList->invalidate('config');
     }
 }

@@ -122,7 +122,8 @@ class Form extends Generic
                 'title'    => __('Code'),
                 'label'    => __('Code'),
                 'required' => true,
-                'disabled' => $disabled
+                'disabled' => $disabled,
+                'class' => 'validate-not-negative-number'
             ]
         );
         $dashboard->addField(
