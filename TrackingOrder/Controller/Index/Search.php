@@ -3,6 +3,7 @@
 namespace Magenest\TrackingOrder\Controller\Index;
 
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResourceConnection;
 
 class Search extends \Magento\Framework\App\Action\Action
 {
@@ -45,6 +46,8 @@ class Search extends \Magento\Framework\App\Action\Action
      * @var \Magento\Sales\Model\OrderRepository
      */
     protected $ksOrderRepository;
+    protected $resourceConnection;
+
     /**
      * @param \Magento\Framework\App\Action\Context $ksContext
      * @param \Magento\Framework\Registry $ksRegistry
@@ -55,6 +58,7 @@ class Search extends \Magento\Framework\App\Action\Action
      * @param \Magenest\TrackingOrder\Block\Index $trackingOrderIndex
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $ksSearchCriteriaBuilder
      * @param \Magento\Customer\Model\Session $customerSession
+     * @param ResourceConnection $resourceConnection
      */
     public function __construct(
         Context $ksContext,
@@ -65,7 +69,8 @@ class Search extends \Magento\Framework\App\Action\Action
         \Magento\Sales\Model\OrderRepository $ksOrderRepository,
         \Magenest\TrackingOrder\Block\Index $trackingOrderIndex,
         \Magento\Framework\Api\SearchCriteriaBuilder $ksSearchCriteriaBuilder,
-        \Magento\Customer\Model\Session $customerSession
+        \Magento\Customer\Model\Session $customerSession,
+        ResourceConnection $resourceConnection
     ) {
         $this->ksRegistry = $ksRegistry;
         $this->ksMessageManager = $ksMessageManager;
@@ -76,6 +81,7 @@ class Search extends \Magento\Framework\App\Action\Action
         $this->trackingOrderIndex = $trackingOrderIndex;
         $this->customerSession = $customerSession;
         parent::__construct($ksContext);
+        $this->resourceConnection = $resourceConnection;
     }
 
     /**
@@ -85,13 +91,15 @@ class Search extends \Magento\Framework\App\Action\Action
     {
         $id = $this->getRequest()->getPost('order_id');
         $ksData = $this->getOrderId($id);
-//        if ($this->customerSession->isLoggedIn() && $this->getAccountOrderId($id)) {
-//            $ksOrderId = $this->getAccountOrderId($id);
-//        } else {
-//            $this->ksMessageManager->addErrorMessage(__('Please check your order id'));
-//            $ksResultRedirect = $this->resultRedirectFactory->create();
-//            return $ksResultRedirect->setPath('trackingorder/index/index');
-//        }
+        if ($this->customerSession->isLoggedIn()) {
+            if (in_array($ksData, $this->getAccountOrderId())) {
+                $ksOrderId = $ksData;
+            } else {
+                $this->ksMessageManager->addErrorMessage(__('Please check your order id again, This is not your order id'));
+                $ksResultRedirect = $this->resultRedirectFactory->create();
+                return $ksResultRedirect->setPath('trackingorder/index/index');
+            }
+        }
         if ($ksData) {
             $ksOrderId = $this->getOrderId($id);
         } else {
@@ -105,9 +113,16 @@ class Search extends \Magento\Framework\App\Action\Action
             $ksResultRedirect = $this->resultRedirectFactory->create();
             return $ksResultRedirect->setPath('trackingorder/index/index');
         }
+//        if ($this->customerSession->isLoggedIn() && in_array($ksData, $this->getAccountOrderId())) {
+//            $ksOrderId = $ksData;
+//        } else {
+//            $this->ksMessageManager->addErrorMessage(__('Please check your order id'));
+//            $ksResultRedirect = $this->resultRedirectFactory->create();
+//            return $ksResultRedirect->setPath('trackingorder/index/index');
+//        }
         if (!$this->customerSession->isLoggedIn()) {
             if ($ksEmailId != $ksOrderData->getCustomerEmail()) {
-                $this->ksMessageManager->addErrorMessage(__('Please enter correct email id'));
+                $this->ksMessageManager->addErrorMessage(__('Please enter correct email'));
                 $ksResultRedirect = $this->resultRedirectFactory->create();
                 return $ksResultRedirect->setPath('trackingorder/index/index');
             }
@@ -132,15 +147,25 @@ class Search extends \Magento\Framework\App\Action\Action
         }
     }
 
-    public function getAccountOrderId($ksIncrementId)
+    public function getAccountOrderId()
     {
         $customerId = $this->customerSession->getCustomerId();
-        $ksSearchCriteriaBuilder = $this->ksSearchCriteriaBuilder
-            ->addFilter('increment_id', $ksIncrementId)
-            ->addFilter('customer_id', $customerId, 'eq');
-        $ksOrder = $this->ksOrderRepository->getList($ksSearchCriteriaBuilder->create())->getItems();
-        foreach ($ksOrder as $key => $ksValue) {
-            return $ksValue->getId();
-        }
+//        $ksSearchCriteriaBuilder = $this->ksSearchCriteriaBuilder
+//            ->addFilter('increment_id', $ksIncrementId)
+//            ->addFilter('customer_id', $customerId, 'eq');
+//        $ksOrder = $this->ksOrderRepository->getList($ksSearchCriteriaBuilder->create())->getItems();
+//        foreach ($ksOrder as $key => $ksValue) {
+//            return $ksValue->getId();
+//        }
+        $orderIds = [];
+        $order = [];
+        $connection = $this->resourceConnection->getConnection();
+        $orderTable = $connection->getTableName('sales_order_grid');
+        $select = $connection->select()->from(
+            $orderTable,
+            'entity_id'
+        )->where('customer_id = ?', $customerId);
+        $orderIds = $connection->fetchAll($select);
+        return array_column($orderIds, 'entity_id');
     }
 }
