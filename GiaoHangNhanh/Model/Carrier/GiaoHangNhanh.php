@@ -6,6 +6,7 @@ use Magenest\GiaoHangNhanh\Helper\CityProvinceProvider;
 use Magenest\GiaoHangNhanh\Helper\DistrictGhnHelper;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Xml\Security;
@@ -102,6 +103,10 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
 
     protected $shipmentFee = 0;
 
+    protected $resourceConnection;
+    protected $orderRepository;
+    protected $orderResourceModel;
+
     /**
      * GiaoHangNhanh constructor.
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -130,6 +135,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @param ResourceOrder $resourceOrder
      * @param OrderFactory $orderFactory
      * @param \Magento\Framework\App\Request\Http $request
+     * @param Session $session
      * @param array $data
      */
     public function __construct(
@@ -158,6 +164,9 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         DistrictGhnHelper $districtHelper,
         ResourceOrder $resourceOrder,
         OrderFactory $orderFactory,
+        ResourceConnection $resourceConnection,
+        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
+        \Magento\Sales\Model\ResourceModel\Order $orderResourceModel,
         \Magento\Framework\App\Request\Http $request,
 //		\Magenest\Core\Helper\OrderHelper $orderHelper,
         Session $session,
@@ -177,6 +186,9 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $this->request = $request;
         //		$this->orderHelper = $orderHelper;
         $this->checkoutSession = $session;
+        $this->resourceConnection = $resourceConnection;
+        $this->orderRepository = $orderRepository;
+        $this->orderResourceModel = $orderResourceModel;
         parent::__construct(
             $scopeConfig,
             $rateErrorFactory,
@@ -620,6 +632,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $response = json_decode($this->callApi($params, $uri), true);
         if ($response['message'] == 'Success') {
             $orderCode = $response['data']['order_code'];
+            $this->updateGhnOrderCodeAttribute($orderCode, $order->getEntityId());
             $order->setData('api_order_id', $orderCode);
             $order->setData('shipment_type', 2);
             $order->setData('shipment_fee', $this->shipmentFee);
@@ -711,6 +724,23 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
 //        } else {
 //            $result->setErrors("Create Giao Hang Nhanh Order Fail: " . $response['message']);
 //        }
+    }
+
+    public function updateGhnOrderCodeAttribute($orderCode, $orderId)
+    {
+        $order = $this->orderFactory->create()->load($orderId);
+        $order->setData('ghn_order_code_attribute', $orderCode);
+        $order->save();
+//        $connection = $this->resourceConnection->getConnection();
+//        $orderTable = $connection->getTableName('sales_order');
+//        $connection->update(
+//            $orderTable,
+//            ['ghn_order_code_attribute' => $orderCode],
+//            ['entity_id = ?' => $orderId]
+//        );
+     /*   $order = $this->orderRepository->get($orderId);
+        $order->setGhnOrderCodeAttribute($orderCode);
+        $this->orderResourceModel->save($order);*/
     }
 
     public function processAdditionalValidation(\Magento\Framework\DataObject $request)

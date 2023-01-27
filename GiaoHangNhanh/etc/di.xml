@@ -15,4 +15,11 @@
             <argument name="logger" xsi:type="object">Magenest\GiaoHangNhanh\Helper\Logger\Logger</argument>
         </arguments>
     </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="ghn_order_code_attribute" xsi:type="string">sales_order.ghn_order_code_attribute</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>

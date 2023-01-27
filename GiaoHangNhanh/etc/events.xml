@@ -9,4 +9,7 @@
 <!--    <event name="sales_order_creditmemo_save_after">-->
 <!--        <observer name="sales_order_creditmemo_cancel" instance="Magenest\GiaoHangNhanh\Observer\CancelGhnObserver"/>-->
 <!--    </event>-->
+    <event name="sales_order_save_after">
+        <observer instance="Magenest\GiaoHangNhanh\Observer\Sales\OrderSaveAfter" name="set_ghn_order_code_attribute"/>
+    </event>
 </config>
