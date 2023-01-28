@@ -632,7 +632,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $response = json_decode($this->callApi($params, $uri), true);
         if ($response['message'] == 'Success') {
             $orderCode = $response['data']['order_code'];
-            $this->updateGhnOrderCodeAttribute($orderCode, $order->getEntityId());
+            $order->setData('ghn_order_code_attribute', $orderCode);
             $order->setData('api_order_id', $orderCode);
             $order->setData('shipment_type', 2);
             $order->setData('shipment_fee', $this->shipmentFee);
@@ -706,41 +706,20 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
      * @param $params
      * @throws \Zend_Http_Client_Exception
      */
-    public function cancelOrder($params)
+    public function cancelOrder($order)
     {
         $uri = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel";
-//        $params = [
-//            'order_code' => 'LLUWPV'
-//        ];
+        $result = new \Magento\Framework\DataObject();
+        $params = [
+            'order_codes' => [$order]
+        ];
         $this->callApi($params, $uri);
-//        $response = json_decode($this->callApi($params, $uri), true);
-//        if ($response['message'] == 'Success') {
-//            $qty = $response
-//            $creditmemoItem = $this->itemCreationFactory->create();
-//            $creditmemoItem->setQty($qty)->setOrderItemId($itemId);
-//            $itemIdsToRefund[] = $creditmemoItem;
-//            $this->refundOrder->execute($orderId, $itemIdsToRefund);
-//            $this->messageManager->addSuccessMessage("Create Giao Hang Nhanh Order Success");
-//        } else {
-//            $result->setErrors("Create Giao Hang Nhanh Order Fail: " . $response['message']);
-//        }
-    }
-
-    public function updateGhnOrderCodeAttribute($orderCode, $orderId)
-    {
-        $order = $this->orderFactory->create()->load($orderId);
-        $order->setData('ghn_order_code_attribute', $orderCode);
-        $order->save();
-//        $connection = $this->resourceConnection->getConnection();
-//        $orderTable = $connection->getTableName('sales_order');
-//        $connection->update(
-//            $orderTable,
-//            ['ghn_order_code_attribute' => $orderCode],
-//            ['entity_id = ?' => $orderId]
-//        );
-     /*   $order = $this->orderRepository->get($orderId);
-        $order->setGhnOrderCodeAttribute($orderCode);
-        $this->orderResourceModel->save($order);*/
+        $response = json_decode($this->callApi($params, $uri), true);
+        if ($response['message'] == 'Success') {
+            $this->messageManager->addSuccessMessage("Cancel Giao Hang Nhanh Order Success");
+        } else {
+            $result->setErrors("Cancel Giao Hang Nhanh Order Fail: " . $response['message']);
+        }
     }
 
     public function processAdditionalValidation(\Magento\Framework\DataObject $request)

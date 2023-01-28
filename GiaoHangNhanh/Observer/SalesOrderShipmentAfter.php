@@ -37,7 +37,8 @@ class SalesOrderShipmentAfter implements ObserverInterface
         $width = 10;
         $height = 10;
         $type = 2;
-        $this->shippingMethod->createOrder($shipment, $weight, $length, $width, $height, $type, $result);
-
+        if ($shipment->getOrder()->getData('shipping_method') == 'giaohangnhanh_giaohangnhanh') {
+            $this->shippingMethod->createOrder($shipment, $weight, $length, $width, $height, $type, $result);
+        }
     }
 }

@@ -30,6 +30,9 @@ class CancelGhnObserver implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $this->shippingMethod->cancelOrder();
+        $order = $observer->getEvent()->getOrder()->getData('ghn_order_code_attribute');
+        if ($observer->getEvent()->getOrder()->getData('shipping_method') == 'giaohangnhanh_giaohangnhanh') {
+            $this->shippingMethod->cancelOrder($order);
+        }
     }
 }
