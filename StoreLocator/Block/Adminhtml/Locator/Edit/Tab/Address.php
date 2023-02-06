@@ -95,6 +95,7 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic
             'label' => __('Zipcode'),
             'id' => 'zipcode',
             'title' => __('Zipcode'),
+             'class' => 'validate-number',
             'required' => true
                 ]
         );
@@ -115,6 +116,7 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic
             'label' => __('Latitude'),
             'id' => 'lat',
             'title' => __('Latitude'),
+            'class' => 'validate-number',
             'required' => true
                 ]
         );
@@ -126,6 +128,7 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic
             'label' => __('Longitude'),
             'id' => 'lng',
             'title' => __('Longitude'),
+            'class' => 'validate-number',
             'required' => true
                 ]
         );

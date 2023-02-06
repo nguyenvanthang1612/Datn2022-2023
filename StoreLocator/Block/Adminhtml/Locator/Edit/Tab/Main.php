@@ -85,8 +85,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic
             'label' => __('Email'),
             'id' => 'email',
             'title' => __('Email'),
+             'class' => 'validate-email',
             'required' => false
-                ]
+            ]
         );
 
         $baseFieldset->addField(
@@ -97,8 +98,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic
             'label' => __('Phone Number'),
             'id' => 'phone_number',
             'title' => __('Phone Number'),
+             'class' => 'validate-number validate-length minimum-length-10 maximum-length-12',
             'required' => false
-                ]
+            ]
         );
 
         $baseFieldset->addField(
@@ -109,8 +111,9 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic
             'label' => __('Fax'),
             'id' => 'fax',
             'title' => __('Fax'),
+            'class' => 'validate-number validate-length minimum-length-10 maximum-length-12',
             'required' => false
-                ]
+            ]
         );
 
         $baseFieldset->addField(
