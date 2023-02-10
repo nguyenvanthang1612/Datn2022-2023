@@ -2,9 +2,6 @@
 
 namespace Magenest\StoreLocator\Helper;
 
-/**
- * Contact base helper
- */
 class Data extends \Magenest\StoreLocator\Helper\CoreData
 {
     protected $scopeConfig;

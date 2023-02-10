@@ -8,7 +8,6 @@ use Magento\Checkout\Model\Session;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Xml\Security;
 use Magento\Inventory\Model\ResourceModel\Source;
 use Magento\Inventory\Model\SourceFactory;
@@ -17,10 +16,6 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Sales\Model\ResourceModel\Order as ResourceOrder;
 
-/**
- * Class GiaoHangNhanh
- * @package Magenest\GiaoHangNhanh\Model\Carrier
- */
 class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnline implements
     \Magento\Shipping\Model\Carrier\CarrierInterface,
     \Magenest\GiaoHangNhanh\Api\GiaoHangNhanhInterface
@@ -171,8 +166,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
 //		\Magenest\Core\Helper\OrderHelper $orderHelper,
         Session $session,
         array $data = []
-    )
-    {
+    ) {
         $this->httpClientFactory = $httpClientFactory;
         $this->inventoryResource = $inventoryResource;
         $this->sourceFactory = $sourceFactory;
@@ -301,7 +295,6 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         /** get weight */
         $weight = 0;
         $poundToKg = 0.4535;
-        $checkBrand = false;
         $quoteItem = $this->quoteItemFactory->create();
         $this->itemResourceModel->load($quoteItem, $cartId);
         $products = $quoteItem->getAllItems();
@@ -327,10 +320,7 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $freeShipping = $this->_scopeConfig->getValue('carriers/giaohangnhanh/enable_freeshipping');
         $freeShippingPrice = $this->_scopeConfig->getValue('carriers/giaohangnhanh/freeshipping_subtotal');
         $enableFreeBrand = $this->_scopeConfig->getValue('carriers/giaohangnhanh/enable_freebrand');
-        if ($enableFreeBrand) {
-            $checkBrand = $this->checkBrand($quoteItem);
-        }
-        if ($freeShipping && $quoteItem->getSubtotal() >= $freeShippingPrice || $checkBrand) {
+        if ($freeShipping) {
             return [
                 'day_ship' => number_format($freeShippingPrice) . ' VND',
                 'service_name' => number_format($freeShippingPrice) . ' VND',
@@ -639,9 +629,9 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
 //            $order->setData('transfer_amount', $codAmount);
             $this->resourceOrder->save($order, 'ReadyToPick');
             //			$this->orderHelper->afterShipmentSms($order);
-            $this->messageManager->addSuccessMessage("Create Giao Hang Nhanh Order Success");
+            $this->messageManager->addSuccessMessage(__("Create Giao Hang Nhanh Order Success"));
         } else {
-            $result->setErrors("Create Giao Hang Nhanh Order Fail: " . $response['message']);
+            $result->setErrors(__("Create Giao Hang Nhanh Order Fail: ") . $response['message']);
         }
     }
 
@@ -680,29 +670,6 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
     }
 
     /**
-     * @param array $data
-     * @throws \Magento\Framework\Exception\AlreadyExistsException
-     */
-    public function updateShipmentStatus($data = [])
-    {
-        if (!empty($data) && isset($data['OrderCode'])) {
-            $orderCode = $data['OrderCode'];
-            $order = $this->orderFactory->create();
-            $this->resourceOrder->load($order, $orderCode, 'api_order_id');
-            if ($data['Status'] == "Delivered" && $order->getPayment()->getMethod() == "checkmo") {
-                $dateTime = ObjectManager::getInstance()->get(TimezoneInterface::class);
-                $order->setTransferDate($dateTime->date()->format('Y-m-d H:i:s'));
-                $codAmount = $order->getGrandTotal();
-                if ($order->getShipmentType() == self::CUSTOMER_PAID) {
-                    $codAmount -= $order->getShipmentFee();
-                }
-                $order->setTransferAmount($codAmount);
-            }
-            $this->resourceOrder->save($order, $data['CurrentStatus']);
-        }
-    }
-
-    /**
      * @param $params
      * @throws \Zend_Http_Client_Exception
      */
@@ -716,9 +683,9 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
         $this->callApi($params, $uri);
         $response = json_decode($this->callApi($params, $uri), true);
         if ($response['message'] == 'Success') {
-            $this->messageManager->addSuccessMessage("Cancel Giao Hang Nhanh Order Success");
+            $this->messageManager->addSuccessMessage(__("Cancel Giao Hang Nhanh Order Success"));
         } else {
-            $result->setErrors("Cancel Giao Hang Nhanh Order Fail: " . $response['message']);
+            $result->setErrors(__("Cancel Giao Hang Nhanh Order Fail: ") . $response['message']);
         }
     }
 
@@ -729,20 +696,6 @@ class GiaoHangNhanh extends \Magento\Shipping\Model\Carrier\AbstractCarrierOnlin
 
     public function isShippingLabelsAvailable()
     {
-        return true;
-    }
-
-    public function checkBrand($quote)
-    {
-        $freeBrand = $this->_scopeConfig->getValue('carriers/giaohangnhanh/free_brand');
-        $brandIds = explode(',', $freeBrand);
-        foreach ($quote->getAllItems() as $item) {
-            if (!$item->getParentItemId()) {
-                if (!in_array($item->getProduct()->getBrandId(), $brandIds)) {
-                    return false;
-                }
-            }
-        }
         return true;
     }
 }

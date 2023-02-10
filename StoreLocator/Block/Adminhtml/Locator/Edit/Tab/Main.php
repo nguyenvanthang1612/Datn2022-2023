@@ -5,7 +5,6 @@ namespace Magenest\StoreLocator\Block\Adminhtml\Locator\Edit\Tab;
 /**
  * Store locator edit form main tab
  *
- * @SuppressWarnings(PHPMD.DepthOfInheritance)
  */
 class Main extends \Magento\Backend\Block\Widget\Form\Generic
 {

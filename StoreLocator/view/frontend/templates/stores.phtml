@@ -266,27 +266,27 @@ $zipcode = $this->getRequest()->getParam('zipcode', '');
             google.maps.event.addDomListener(window, 'load', drawMap(markers, googleMapDivId, false, false));
             <?php endif ?>
 
-            $('#search_radius').click(function () {
-                var $form = $('#search_by_distance');
-                if ($form.valid()) {
-                    $.ajax({
-                        type: "GET",
-                        dataType: "json",
-                        url: "https://maps.googleapis.com/maps/api/geocode/json",
-                        data: {'address': $('#location').val(), 'sensor': false},
-                        success: function (data) {
-                            if (data.results.length) {
-                                latitude = data.results[0].geometry.location.lat;
-                                longitude = data.results[0].geometry.location.lng;
-                                $('#lat_search').val(latitude);
-                                $('#long_search').val(longitude);
-
-                                $("#search_by_distance").submit();
-                            }
-                        }
-                    });
-                }
-            });
+            // $('#search_radius').click(function () {
+            //     var $form = $('#search_by_distance');
+            //     if ($form.valid()) {
+            //         $.ajax({
+            //             type: "GET",
+            //             dataType: "json",
+            //             url: "https://maps.googleapis.com/maps/api/geocode/json",
+            //             data: {'address': $('#location').val(), 'sensor': false},
+            //             success: function (data) {
+            //                 if (data.results.length) {
+            //                     latitude = data.results[0].geometry.location.lat;
+            //                     longitude = data.results[0].geometry.location.lng;
+            //                     $('#lat_search').val(latitude);
+            //                     $('#long_search').val(longitude);
+            //
+            //                     $("#search_by_distance").submit();
+            //                 }
+            //             }
+            //         });
+            //     }
+            // });
         });
 
     });

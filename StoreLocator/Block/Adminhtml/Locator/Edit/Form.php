@@ -3,12 +3,6 @@
 namespace Magenest\StoreLocator\Block\Adminhtml\Locator\Edit;
 
 /**
- * Adminhtml permissions user edit form
- *
- * @author     Magento Core Team <core@magentocommerce.com>
- *
- */
-/**
  * @SuppressWarnings(PHPMD.DepthOfInheritance)
  */
 class Form extends \Magento\Backend\Block\Widget\Form\Generic

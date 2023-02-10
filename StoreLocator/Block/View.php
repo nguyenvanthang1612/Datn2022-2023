@@ -23,8 +23,7 @@ class View extends \Magento\Framework\View\Element\Template
         StoreFactory $storeFactory,
         SessionManager $sessionManager,
         array $data = []
-    )
-    {
+    ) {
         $this->_countryFactory = $countryFactory;
         $this->_storeFactory = $storeFactory;
         $this->_filterProvider = $filterProvider;
@@ -37,27 +36,30 @@ class View extends \Magento\Framework\View\Element\Template
         return parent::_prepareLayout();
     }
 
-    public function getStoreView() {
+    public function getStoreView()
+    {
         $model = $this->_coreRegistry->registry('store_view');
-        if($model->getImage()) {
-            $model->setImageUrl($this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA).$model->getImage());
+        if ($model->getImage()) {
+            $model->setImageUrl($this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . $model->getImage());
         }
         return $model;
     }
 
-    public function getDescription() {
+    public function getDescription()
+    {
         $storeId = $this->_storeManager->getStore()->getId();
         $store = $this->getStoreView();
         return $this->_filterProvider->getBlockFilter()->setStoreId($storeId)->filter($store->getDescription());
     }
 
-    public function getTradingHours() {
+    public function getTradingHours()
+    {
         $storeId = $this->_storeManager->getStore()->getId();
         $store = $this->getStoreView();
         return $this->_filterProvider->getBlockFilter()->setStoreId($storeId)->filter($store->getTradingHours());
     }
 
-    public function getRadius($storelocator = NULL)
+    public function getRadius($storelocator = null)
     {
         //Return store radius
         if (!is_null($storelocator)) {
@@ -73,5 +75,4 @@ class View extends \Magento\Framework\View\Element\Template
         }
         return;
     }
-
 }

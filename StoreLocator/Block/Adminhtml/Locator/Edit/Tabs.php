@@ -2,11 +2,6 @@
 
 namespace Magenest\StoreLocator\Block\Adminhtml\Locator\Edit;
 
-/**
- * User page left menu
- *
- * @author      Magento Core Team <core@magentocommerce.com>
- */
 class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
     /**

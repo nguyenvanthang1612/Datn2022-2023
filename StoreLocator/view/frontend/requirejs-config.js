@@ -9,11 +9,11 @@ var config = {
             storelocator: 'Magenest_StoreLocator/js/storelocator'
         }
     },
-    config: {
-        mixins: {
-            'Magento_Checkout/js/action/place-order': {
-                'Magenest_StoreLocator/js/order/place-order-mixin': true
-            },
-        }
-    }
+    // config: {
+    //     mixins: {
+    //         'Magento_Checkout/js/action/place-order': {
+    //             'Magenest_StoreLocator/js/order/place-order-mixin': true
+    //         },
+    //     }
+    // }
 };

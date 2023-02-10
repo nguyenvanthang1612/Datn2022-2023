@@ -3,11 +3,7 @@
 namespace Magenest\StoreLocator\Block\Adminhtml\Locator;
 
 use Magenest\StoreLocator\Model\StoreFactory;
-/**
- * User edit page
- *
- * @author      Magento Core Team <core@magentocommerce.com>
- */
+
 class Edit extends \Magento\Backend\Block\Widget\Form\Container
 {
     /**

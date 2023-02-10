@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kal
- * Date: 19/02/2020
- * Time: 08:11
- */
 
 namespace Magenest\GiaoHangNhanh\Controller\Webhook;
 
@@ -53,7 +47,7 @@ class Hook extends \Magento\Framework\App\Action\Action implements CsrfAwareActi
         $content = json_decode(urldecode($this->_request->getContent()), true);
         if (is_array($content)) {
             $this->_logger->debug(urldecode($this->_request->getContent()));
-            $this->_helper->updateShipmentStatus($content);
+//            $this->_helper->updateShipmentStatus($content);
         }
     }
 

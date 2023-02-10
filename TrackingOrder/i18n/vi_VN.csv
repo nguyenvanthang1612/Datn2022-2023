@@ -7,3 +7,6 @@ Allow for top menu,Cho phép thực đơn hàng đầu
 Button Color,Nút màu
 Button Text,Nút văn bản
 Button Text Color,Màu văn bản nút
+"Please check your order id again, This is not your order id","Đây không phải id đơn hàng của bạn, vui lòng kiểm tra lại"
+"Please enter valid order id","Vui lòng nhập id đơn hàng hợp lệ"
+"Please enter correct email","Vui lòng nhập email chính xác"

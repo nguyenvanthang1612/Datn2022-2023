@@ -30,6 +30,7 @@ class Address extends \Magento\Backend\Block\Widget\Form\Generic
      *
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return \Magento\Backend\Block\Widget\Form
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareForm()
     {

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kal
- * Date: 16/02/2020
- * Time: 14:00
- */
 
 namespace Magenest\GiaoHangNhanh\Model\Config\Source;
 use Magento\Framework\Option\ArrayInterface;
